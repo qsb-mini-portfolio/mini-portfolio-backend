@@ -10,3 +10,5 @@ test_aws_connection:
     AWS_REGION: $AWS_REGION
   script:
     - aws sts get-caller-identity
+  only:
+    - main
