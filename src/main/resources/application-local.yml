@@ -5,11 +5,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/portfolio
     username: portfolio
     password: portfolio
-  jpa:
-    hibernate:
-      ddl-auto: validate
-  flyway:
-    enabled: true
 
 management:
   endpoints:

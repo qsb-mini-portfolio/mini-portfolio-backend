@@ -19,6 +19,12 @@ spec:
           image: 958972464858.dkr.ecr.eu-north-1.amazonaws.com/backend:staging
           ports:
             - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+          envFrom:
+            - secretRef:
+                name: staging-backend-env
 ---
 apiVersion: v1
 kind: Service

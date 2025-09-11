@@ -2,7 +2,10 @@ spring:
   application:
     name: portfolio-backend
   jpa:
-    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
 
 management:
   endpoints:
