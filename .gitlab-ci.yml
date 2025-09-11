@@ -30,7 +30,7 @@ build-push:
   only:
     - main
   dependencies:
-    - login
+    - docker-login
 
 deploy-to-eks:
   stage: deploy-to-eks
