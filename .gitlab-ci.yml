@@ -27,10 +27,8 @@ build-and-push:
 
 deploy-staging:
   stage: deploy
-  image: amazon/aws-cli:latest
+  image: heyvaldemar/aws-kubectl:latest
   script:
-    - curl -LO "https://dl.k8s.io/release/$(curl -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-    - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
     - aws sts get-caller-identity
     - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $EKS_CLUSTER_NAME
     - kubectl apply -f k8s/backend-deployment-staging.yaml
