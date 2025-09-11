@@ -1,7 +1,8 @@
 stages:
   - test_aws
-  - deploy-to-eks
   - docker-build
+  - deploy-to-eks
+  
 
 test_aws:
   stage: test_aws
