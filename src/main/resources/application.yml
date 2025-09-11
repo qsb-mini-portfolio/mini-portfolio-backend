@@ -1,15 +1,9 @@
 spring:
   application:
     name: portfolio-backend
-  datasource:
-    url: ${JDBC_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-  profiles:
-      active: local
-
   jpa:
     open-in-view: false
+
 management:
   endpoints:
     web:
