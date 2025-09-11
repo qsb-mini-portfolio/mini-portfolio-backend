@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/backend:staging
+          image: 958972464858.dkr.ecr.eu-north-1.amazonaws.com/backend:staging
           ports:
             - containerPort: 8080
 ---
