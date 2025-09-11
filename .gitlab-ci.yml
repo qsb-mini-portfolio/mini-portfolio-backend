@@ -1,40 +1,55 @@
 stages:
-  - build
-  - push
-  - deploy
+  - test_aws
+  - docker-build
+  - deploy-to-eks
+  
 
-variables:
-  AWS_REGION: us-east-1
-  EKS_CLUSTER_NAME: stagging-cluster
-  ECR_REPOSITORY: backend
+test_aws:
+  stage: test_aws
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  variables:
+    CLUSTER_NAME: my-eks-cluster
+  script:
+    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+    - aws configure set default.region $AWS_DEFAULT_REGION
 
-build:
-  stage: build
+    - aws sts get-caller-identity
+
+docker-build:
+  stage: docker-build
+  image: docker:20.10.16
   services:
     - docker:dind
   variables:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_TLS_CERTDIR: ""
   script:
-    - docker build -t $ECR_REPOSITORY:$CI_COMMIT_SHORT_SHA .
-    - docker tag $ECR_REPOSITORY:$CI_COMMIT_SHORT_SHA $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$CI_COMMIT_SHORT_SHA
+    - docker build -t $IMAGE_NAME .
+    - docker push $IMAGE_NAME
   only:
     - main
 
-push:
-  stage: push
-  image: amazon/aws-cli:latest
+deploy-to-eks:
+  stage: deploy-to-eks
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  variables:
+    CLUSTER_NAME: stagging-cluster
   script:
-    - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-    - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$CI_COMMIT_SHORT_SHA
-  only:
-    - main
+    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+    - aws configure set default.region $AWS_DEFAULT_REGION
 
-deploy-staging:
-  stage: deploy
-  image: bitnami/kubectl:latest
-  script:
-    - aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER_NAME
-    - kubectl apply -f k8s/backend-deployment-staging.yaml
+    - aws eks update-kubeconfig --name $CLUSTER_NAME
+
+    - kubectl get nodes
+
+    - kubectl set image deployment/my-app my-container=$IMAGE_NAME --record
+
+    - kubectl rollout status deployment/my-app
   only:
     - main
+  dependencies:
+    - docker-build
+
+
