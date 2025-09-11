@@ -18,6 +18,7 @@ build-and-push:
     - apk add --no-cache python3 py3-pip
     - pip3 install awscli
     - aws sts get-caller-identity
+    - aws ecr create-repository --repository-name backend --region us-east-1
     - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
   script:
     - docker build -t $ECR_REPOSITORY:$CI_COMMIT_SHORT_SHA .
