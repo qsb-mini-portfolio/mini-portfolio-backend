@@ -1,6 +1,6 @@
 stages:
   - build
-  - deploy-to-eks
+  - deploy
 
 variables:
   ECR_REPOSITORY: backend
