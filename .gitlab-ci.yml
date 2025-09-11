@@ -1,23 +1,9 @@
 stages:
-  - test_aws
-  - docker-build
+  - build
   - deploy-to-eks
-  
 
-test_aws:
-  stage: test_aws
-  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
-  variables:
-    CLUSTER_NAME: my-eks-cluster
-  script:
-    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-    - aws configure set default.region $AWS_DEFAULT_REGION
-
-    - aws sts get-caller-identity
-
-docker-build:
-  stage: docker-build
+build:
+  stage: build
   image: docker:20.10.16
   services:
     - docker:dind
