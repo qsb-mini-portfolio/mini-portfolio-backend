@@ -1,39 +1,30 @@
 stages:
-  - login
-  - build-push
+  - build
   - deploy-to-eks
 
 variables:
   ECR_REPOSITORY: backend
 
-docker-login:
-  stage: login
-  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
-  script:
-    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-    - aws configure set default.region $AWS_DEFAULT_REGION
-    - aws sts get-caller-identity
-    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
-  only:
-    - main
-
-build-push:
-  stage: build-push
+build-and-push:
+  stage: build
   image: docker:20.10.16
   services:
     - docker:dind
   variables:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_TLS_CERTDIR: ""
+  before_script:
+    - apk add --no-cache python3 py3-pip
+    - pip3 install awscli
+    - aws sts get-caller-identity
+    - aws ecr get-login-password --region $AWS_DEFAULT_REGION \
+      | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
   script:
     - docker build -t $ECR_REPOSITORY:$CI_COMMIT_SHORT_SHA .
     - docker tag $ECR_REPOSITORY:$CI_COMMIT_SHORT_SHA $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY:$CI_COMMIT_SHORT_SHA
     - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY:$CI_COMMIT_SHORT_SHA
   only:
     - main
-  dependencies:
-    - docker-login
 
 deploy-to-eks:
   stage: deploy-to-eks
@@ -55,6 +46,6 @@ deploy-to-eks:
   only:
     - main
   dependencies:
-    - build-push
+    - build-and-push
 
 
