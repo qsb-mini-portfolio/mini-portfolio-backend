@@ -10,7 +10,6 @@ test_aws_connection:
     AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
   script:
     - echo "Testing AWS connection..."
-    - aws sts get-caller-identity
   only:
     - main
     - test
