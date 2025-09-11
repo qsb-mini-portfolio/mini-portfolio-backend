@@ -27,8 +27,10 @@ build-and-push:
 
 deploy-staging:
   stage: deploy
-  image: lachlanevenson/k8s-awscli:latest
+  image: bitnami/kubectl:latest
   script:
+    - install_packages() { apk add --no-cache python3 py3-pip curl; }; install_packages
+    - pip3 install awscli
     - aws sts get-caller-identity
     - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $EKS_CLUSTER_NAME
     - kubectl apply -f k8s/backend-deployment-staging.yaml
