@@ -1,5 +1,5 @@
 stages:
-  - build
+  - docker-build
 
 variables:
   IMAGE_NAME: registry.gitlab.com/qs-portfolio/backend:latest
