@@ -24,7 +24,7 @@ spec:
               value: prod
           envFrom:
             - secretRef:
-                name: staging-backend-env
+                name: stagging-backend-env
 ---
 apiVersion: v1
 kind: Service
