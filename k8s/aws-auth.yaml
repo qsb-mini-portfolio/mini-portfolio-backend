@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapUsers: |
+    - userarn: arn:aws:iam::958972464858:user/GitlabRunner
+      username: gitlab-runner
+      groups:
+        - system:masters
