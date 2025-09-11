@@ -18,7 +18,6 @@ build-and-push:
     - pip3 install awscli
     - aws sts get-caller-identity
     - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
-    - aws ecr create-repository --repository-name backend --region us-east-1
   script:
     - docker build -t $ECR_REPOSITORY:$CI_COMMIT_SHORT_SHA .
     - docker tag $ECR_REPOSITORY:$CI_COMMIT_SHORT_SHA $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY:$CI_COMMIT_SHORT_SHA
@@ -26,23 +25,14 @@ build-and-push:
   only:
     - main
 
-deploy-to-eks:
-  stage: deploy-to-eks
-  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
-  variables:
-    CLUSTER_NAME: stagging-cluster
+deploy-staging:
+  stage: deploy
+  image: bitnami/kubectl:latest
   script:
-    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-    - aws configure set default.region $AWS_DEFAULT_REGION
-
-    - aws eks update-kubeconfig --name $CLUSTER_NAME
-
-    - kubectl get nodes
-
-    - kubectl set image deployment/my-app my-container=$IMAGE_NAME --record
-
-    - kubectl rollout status deployment/my-app
+    - apk add --no-cache python3 py3-pip
+    - aws sts get-caller-identity
+    - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $EKS_CLUSTER_NAME
+    - kubectl apply -f k8s/backend-deployment-staging.yaml
   only:
     - main
   dependencies:
