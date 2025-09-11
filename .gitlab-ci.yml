@@ -4,7 +4,7 @@ stages:
   - docker-build
 
 test_aws:
-  stage: test
+  stage: test_aws
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   variables:
     CLUSTER_NAME: my-eks-cluster
@@ -30,7 +30,7 @@ docker-build:
     - main
 
 deploy-to-eks:
-  stage: deploy
+  stage: deploy-to-eks
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   variables:
     CLUSTER_NAME: stagging-cluster
