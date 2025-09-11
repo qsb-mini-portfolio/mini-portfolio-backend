@@ -13,3 +13,4 @@ test_aws_connection:
     - aws sts get-caller-identity
   only:
     - main
+    - test
