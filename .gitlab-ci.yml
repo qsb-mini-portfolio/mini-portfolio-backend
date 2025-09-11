@@ -1,0 +1,20 @@
+stages:
+  - build
+
+variables:
+  IMAGE_NAME: registry.gitlab.com/qs-portfolio/backend:latest
+
+docker-build:
+  stage: docker
+  image: docker:20.10.16
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_TLS_CERTDIR: ""
+  script:
+    - docker build -t $IMAGE_NAME .
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+    - docker push $IMAGE_NAME
+  only:
+    - main
