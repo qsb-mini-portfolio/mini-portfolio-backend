@@ -1,5 +1,6 @@
 stages:
   - build
+  - push
   - deploy-to-eks
 
 variables:
@@ -16,6 +17,15 @@ build:
   script:
     - docker build -t $ECR_REPOSITORY:$CI_COMMIT_SHORT_SHA .
     - docker tag $ECR_REPOSITORY:$CI_COMMIT_SHORT_SHA $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY:$CI_COMMIT_SHORT_SHA
+  only:
+    - main
+
+push:
+  stage: push
+  image: amazon/aws-cli:latest
+  script:
+    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+    - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY:$CI_COMMIT_SHORT_SHA
   only:
     - main
 
