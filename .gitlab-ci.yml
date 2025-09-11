@@ -2,6 +2,9 @@ stages:
   - build
   - deploy-to-eks
 
+variables:
+  ECR_REPOSITORY: backend
+
 build:
   stage: build
   image: docker:20.10.16
