@@ -32,6 +32,7 @@ deploy-staging:
   script:
     - aws sts get-caller-identity
     - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $EKS_CLUSTER_NAME
+    - kubectl apply -f k8s/aws-auth.yaml
     - kubectl apply -f k8s/backend-staging.yaml
   only:
     - main
