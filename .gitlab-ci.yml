@@ -1,19 +1,53 @@
 stages:
-  - test
+  - test_aws
+  - deploy-to-eks
+  - docker-build
 
 test_aws:
   stage: test
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   variables:
-    AWS_DEFAULT_REGION: us-east-1       # your EKS region
-    CLUSTER_NAME: my-eks-cluster        # your EKS cluster name
+    CLUSTER_NAME: my-eks-cluster
   script:
-    # Configure AWS CLI
     - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
     - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
     - aws configure set default.region $AWS_DEFAULT_REGION
 
-    # Check AWS account info
     - aws sts get-caller-identity
+
+docker-build:
+  stage: docker-build
+  image: docker:20.10.16
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_TLS_CERTDIR: ""
+  script:
+    - docker build -t $IMAGE_NAME .
+    - docker push $IMAGE_NAME
   only:
     - main
+
+deploy-to-eks:
+  stage: deploy
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  variables:
+    CLUSTER_NAME: stagging-cluster
+  script:
+    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+    - aws configure set default.region $AWS_DEFAULT_REGION
+
+    - aws eks update-kubeconfig --name $CLUSTER_NAME
+
+    - kubectl get nodes
+
+    - kubectl set image deployment/my-app my-container=$IMAGE_NAME --record
+
+    - kubectl rollout status deployment/my-app
+  only:
+    - main
+  dependencies:
+    - docker-build
+
