@@ -1,4 +1,4 @@
-package com.qsportfolio.backend.controller.auth;
+package com.qsportfolio.backend.controller;
 
 import com.qsportfolio.backend.request.auth.LoginRequest;
 import com.qsportfolio.backend.request.auth.RegisterRequest;

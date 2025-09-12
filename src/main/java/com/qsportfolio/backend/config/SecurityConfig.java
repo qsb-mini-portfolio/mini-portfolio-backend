@@ -2,6 +2,11 @@ package com.qsportfolio.backend.config;
 
 import com.qsportfolio.backend.security.JWTAuthenticationFilter;
 import com.qsportfolio.backend.security.JWTUtil;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,7 +41,12 @@ public class SecurityConfig {
             .cors(cors -> {})
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers(
+                    "/api/auth/**",
+                    "/v3/api-docs/**",
+                    "/swagger-ui/**",
+                    "/swagger-ui.html"
+                ).permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -45,6 +55,22 @@ public class SecurityConfig {
 
 
         return http.build();
+    }
+
+    @Bean
+    public OpenAPI customOpenAPI() {
+        SecurityScheme bearerAuthScheme = new SecurityScheme()
+            .type(SecurityScheme.Type.HTTP)
+            .scheme("bearer")
+            .bearerFormat("JWT");
+
+        Components components = new Components();
+        components.addSecuritySchemes("bearerAuth", bearerAuthScheme);
+
+        return new OpenAPI()
+            .components(components)
+            .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
+            .info(new Info().title("My API").version("1.0"));
     }
 
     @Bean
