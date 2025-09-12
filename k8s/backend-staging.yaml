@@ -40,10 +40,9 @@ spec:
       targetPort: 8080
 ---
 apiVersion: external-secrets.io/v1beta1
-kind: SecretStore
+kind: ClusterSecretStore
 metadata:
   name: aws-secretstore
-  namespace: default
 spec:
   provider:
     aws:
@@ -67,7 +66,7 @@ spec:
   refreshInterval: 1h
   secretStoreRef:
     name: aws-secretstore
-    kind: SecretStore
+    kind: ClusterSecretStore
   target:
     name: stagging-backend-env
   dataFrom:
