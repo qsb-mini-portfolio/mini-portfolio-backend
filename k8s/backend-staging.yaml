@@ -31,7 +31,7 @@ kind: Service
 metadata:
   name: backend-staging-service
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: backend
     environment: staging
