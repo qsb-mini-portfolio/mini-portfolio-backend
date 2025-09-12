@@ -38,3 +38,38 @@ spec:
   ports:
     - port: 8080
       targetPort: 8080
+---
+apiVersion: external-secrets.io/v1beta1
+kind: SecretStore
+metadata:
+  name: aws-secretstore
+  namespace: default
+spec:
+  provider:
+    aws:
+      service: SecretsManager
+      region: eu-north-1
+      auth:
+        secretRef:
+          accessKeyIDSecretRef:
+            name: aws-creds
+            key: access-key
+          secretAccessKeySecretRef:
+            name: aws-creds
+            key: secret-access-key
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: stagging-backend-env
+  namespace: default
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: aws-secretstore
+    kind: SecretStore
+  target:
+    name: stagging-backend-env
+  dataFrom:
+    - extract:
+        key: stagging-backend-env
