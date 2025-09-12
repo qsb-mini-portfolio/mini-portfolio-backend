@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
         - name: backend
-          image: 958972464858.dkr.ecr.eu-north-1.amazonaws.com/backend:latest
+          image: 958972464858.dkr.ecr.eu-north-1.amazonaws.com/backend:staging
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
