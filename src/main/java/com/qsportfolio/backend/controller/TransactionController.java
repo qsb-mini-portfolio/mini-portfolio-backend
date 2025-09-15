@@ -1,10 +1,14 @@
 package com.qsportfolio.backend.controller;
 
-import com.qsportfolio.backend.request.auth.RegisterRequest;
+import com.qsportfolio.backend.domain.transaction.Transaction;
 import com.qsportfolio.backend.request.transaction.CreateTransactionRequest;
+import com.qsportfolio.backend.response.transaction.CreateTransactionResponse;
+import com.qsportfolio.backend.response.transaction.TransactionResponseFactory;
 import com.qsportfolio.backend.service.transaction.TransactionService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/transaction")
@@ -17,13 +21,14 @@ public class TransactionController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<String> register(CreateTransactionRequest createTransactionRequest) {
-        transactionService.createTransaction(
+    public ResponseEntity<CreateTransactionResponse> register(CreateTransactionRequest createTransactionRequest) {
+        Transaction transaction = transactionService.createTransaction(
             createTransactionRequest.getStockId(),
             createTransactionRequest.getVolume(),
             createTransactionRequest.getPrice(),
             createTransactionRequest.getDate()
         );
-        return ResponseEntity.ok("User registered successfully!");
+
+        return ResponseEntity.ok(TransactionResponseFactory.createTransactionResponse(transaction));
     }
 }

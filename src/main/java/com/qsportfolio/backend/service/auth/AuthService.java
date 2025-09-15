@@ -1,6 +1,7 @@
 package com.qsportfolio.backend.service.auth;
 
 import com.qsportfolio.backend.domain.user.User;
+import com.qsportfolio.backend.errorHandler.AppException;
 import com.qsportfolio.backend.repository.UserRepository;
 import com.qsportfolio.backend.security.JWTUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,9 +21,9 @@ public class AuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    public void createUser(String username, String password) throws Exception {
+    public void createUser(String username, String password) throws AppException {
         if (userRepository.findByUsername(username).isPresent()) {
-            throw new Exception("Username already taken!");
+            throw new AppException("Username already taken!");
         }
 
         User user = new User(
@@ -33,10 +34,10 @@ public class AuthService {
         userRepository.save(user);
     }
 
-    public String login(String username, String password) throws Exception {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new Exception("User not found!"));
+    public String login(String username, String password) throws AppException {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new AppException("User not found!"));
         if (!passwordEncoder.matches(password, user.getPassword())) { // Check hash
-            throw new Exception("Invalid password!");
+            throw new AppException("Invalid password!");
         }
 
         return jwtUtil.generateToken(username);

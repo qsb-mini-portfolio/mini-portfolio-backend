@@ -10,7 +10,7 @@ import java.util.UUID;
 @Service
 public class TransactionService {
 
-    public void createTransaction(
+    public Transaction createTransaction(
         UUID stockId,
         float price,
         float volume,
@@ -24,5 +24,7 @@ public class TransactionService {
             price,
             volume
         );
+
+        return transaction;
     }
 }
