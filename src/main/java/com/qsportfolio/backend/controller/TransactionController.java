@@ -21,7 +21,7 @@ public class TransactionController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<CreateTransactionResponse> register(CreateTransactionRequest createTransactionRequest) {
+    public ResponseEntity<CreateTransactionResponse> createTransaction(CreateTransactionRequest createTransactionRequest) {
         Transaction transaction = transactionService.createTransaction(
             createTransactionRequest.getStockId(),
             createTransactionRequest.getVolume(),

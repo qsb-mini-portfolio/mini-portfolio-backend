@@ -21,7 +21,7 @@ public class AuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    public void createUser(String username, String password) throws AppException {
+    public void createUser(String username, String password) {
         if (userRepository.findByUsername(username).isPresent()) {
             throw new AppException("Username already taken!");
         }
@@ -34,9 +34,9 @@ public class AuthService {
         userRepository.save(user);
     }
 
-    public String login(String username, String password) throws AppException {
+    public String login(String username, String password) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new AppException("User not found!"));
-        if (!passwordEncoder.matches(password, user.getPassword())) { // Check hash
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new AppException("Invalid password!");
         }
 
