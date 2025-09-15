@@ -27,7 +27,7 @@ Start Docker and run :
 docker-compose up -d
 ```
 
-## Step 3: Configure the Run/Debug Configuration
+## Step 3: Connect to the Database
 
 1. Start DBeaver and create a new connection
 2. Select `PostgreSQL`
