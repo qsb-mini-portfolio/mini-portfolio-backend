@@ -10,5 +10,5 @@ CREATE Table stock_transaction (
     user_id UUID NOT NULL REFERENCES users(id),
     date TIMESTAMP NOT NULL,
     price FLOAT4 NOT NULL,
-    volume INT4 NOT NULL
+    volume FLOAT4 NOT NULL
 )

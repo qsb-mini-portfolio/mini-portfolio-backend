@@ -1,6 +1,7 @@
 package com.qsportfolio.backend.controller;
 
 import com.qsportfolio.backend.request.auth.RegisterRequest;
+import com.qsportfolio.backend.request.transaction.CreateTransactionRequest;
 import com.qsportfolio.backend.service.transaction.TransactionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +17,13 @@ public class TransactionController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<String> register() {
-        transactionService.test();
+    public ResponseEntity<String> register(CreateTransactionRequest createTransactionRequest) {
+        transactionService.createTransaction(
+            createTransactionRequest.getStockId(),
+            createTransactionRequest.getVolume(),
+            createTransactionRequest.getPrice(),
+            createTransactionRequest.getDate()
+        );
         return ResponseEntity.ok("User registered successfully!");
     }
 }
