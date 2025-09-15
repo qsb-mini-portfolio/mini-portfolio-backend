@@ -6,7 +6,7 @@ import com.qsportfolio.backend.response.transaction.CreateTransactionResponse;
 import com.qsportfolio.backend.response.transaction.TransactionResponseFactory;
 import com.qsportfolio.backend.service.transaction.TransactionService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,7 +20,7 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    @GetMapping("/")
+    @PostMapping("/")
     public ResponseEntity<CreateTransactionResponse> createTransaction(CreateTransactionRequest createTransactionRequest) {
         Transaction transaction = transactionService.createTransaction(
             createTransactionRequest.getStockId(),
@@ -31,4 +31,6 @@ public class TransactionController {
 
         return ResponseEntity.ok(TransactionResponseFactory.createTransactionResponse(transaction));
     }
+
+
 }
