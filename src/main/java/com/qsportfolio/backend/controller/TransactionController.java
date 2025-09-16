@@ -35,7 +35,7 @@ public class TransactionController {
         return ResponseEntity.ok(TransactionResponseFactory.createTransactionResponse(transaction));
     }
 
-    @PostMapping
+    @PostMapping("/stock")
     public ResponseEntity<StockResponse> createStock(CreateStockRequest createStockRequest) {
         Stock stock = transactionService.createStock(
             createStockRequest.getSymbol(),
