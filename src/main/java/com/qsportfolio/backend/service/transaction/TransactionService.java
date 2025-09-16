@@ -1,7 +1,9 @@
 package com.qsportfolio.backend.service.transaction;
 
 import com.qsportfolio.backend.domain.transaction.Transaction;
+import com.qsportfolio.backend.domain.transaction.Stock;
 import com.qsportfolio.backend.errorHandler.AppException;
+import com.qsportfolio.backend.repository.StockRepository;
 import com.qsportfolio.backend.repository.TransactionRepository;
 import com.qsportfolio.backend.security.SecurityUtils;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,9 +16,11 @@ import java.util.UUID;
 public class TransactionService {
 
     private final TransactionRepository transactionRepository;
+    private final StockRepository stockRepository;
 
-    public TransactionService(TransactionRepository transactionRepository) {
+    public TransactionService(TransactionRepository transactionRepository, StockRepository stockRepository) {
         this.transactionRepository = transactionRepository;
+        this.stockRepository = stockRepository;
     }
 
     public Transaction createTransaction(
@@ -40,5 +44,15 @@ public class TransactionService {
             throw new AppException("Stock ID doesn't exist");
         }
         return transaction;
+    }
+
+    public Stock createStock(String symbol, String name) {
+        Stock stock = new Stock(
+                UUID.randomUUID(),
+                symbol,
+                name
+        );
+        stockRepository.save(stock);
+        return stock;
     }
 }
