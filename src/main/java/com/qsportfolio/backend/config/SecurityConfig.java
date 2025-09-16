@@ -69,7 +69,7 @@ public class SecurityConfig {
         cors.setAllowedOrigins(List.of("*"));
         cors.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
         cors.setAllowedHeaders(List.of("Authorization","Content-Type","X-Requested-With"));
-        cors.setAllowCredentials(true);
+        cors.setAllowCredentials(false);
         cors.setExposedHeaders(List.of("Location"));
         cors.setMaxAge(3600L);
 
