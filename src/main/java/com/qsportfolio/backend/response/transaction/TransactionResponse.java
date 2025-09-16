@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class TransactionResponse {
     UUID transactionId;
-    UUID stockId;
+    StockResponse stock;
     float price;
     float volume;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")

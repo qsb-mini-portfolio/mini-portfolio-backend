@@ -13,7 +13,7 @@ public final class TransactionResponseFactory {
     public static TransactionResponse createTransactionResponse(Transaction transaction) {
          return new TransactionResponse(
             transaction.getId(),
-            transaction.getStockId(),
+            createStockResponse(transaction.getStock()),
             transaction.getPrice(),
             transaction.getVolume(),
             transaction.getDate()

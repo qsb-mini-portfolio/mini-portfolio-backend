@@ -32,20 +32,18 @@ public class TransactionService {
         float volume,
         LocalDateTime date) {
 
+        Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new AppException("Stock ID doesn't exist"));
+
         Transaction transaction = new Transaction(
             UUID.randomUUID(),
-            stockId,
+            stock,
             SecurityUtils.getCurrentUser().getId(),
             date,
             price,
             volume
         );
 
-        try {
-            transactionRepository.save(transaction);
-        } catch (DataIntegrityViolationException e) {
-            throw new AppException("Stock ID doesn't exist");
-        }
+        transactionRepository.save(transaction);
         return transaction;
     }
 
