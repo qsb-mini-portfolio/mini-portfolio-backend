@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateTransactionResponse {
+public class TransactionResponse {
     UUID transactionId;
     UUID stockId;
     float price;

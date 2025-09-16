@@ -1,12 +1,15 @@
 package com.qsportfolio.backend.service.transaction;
 
-import com.qsportfolio.backend.domain.transaction.Transaction;
 import com.qsportfolio.backend.domain.transaction.Stock;
+import com.qsportfolio.backend.domain.transaction.Transaction;
 import com.qsportfolio.backend.errorHandler.AppException;
 import com.qsportfolio.backend.repository.StockRepository;
 import com.qsportfolio.backend.repository.TransactionRepository;
 import com.qsportfolio.backend.security.SecurityUtils;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -44,6 +47,11 @@ public class TransactionService {
             throw new AppException("Stock ID doesn't exist");
         }
         return transaction;
+    }
+
+    public Page<Transaction> listTransaction(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return transactionRepository.findByUserId(SecurityUtils.getCurrentUser().getId(), pageable);
     }
 
     public Stock createStock(String symbol, String name) {

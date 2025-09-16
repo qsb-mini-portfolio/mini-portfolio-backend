@@ -19,10 +19,10 @@ import java.util.UUID;
 public class Transaction {
     @Id
     UUID id;
-    @Column(nullable = false)
-    UUID stock_id;
-    @Column(nullable = false)
-    UUID user_id;
+    @Column(nullable = false, name = "stock_id")
+    UUID stockId;
+    @Column(nullable = false, name = "user_id")
+    UUID userId;
     @Column(nullable = false)
     LocalDateTime date;
     @Column(nullable = false)
