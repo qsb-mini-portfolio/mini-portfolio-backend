@@ -23,7 +23,7 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<TransactionResponse> createTransaction(CreateTransactionRequest createTransactionRequest) {
         Transaction transaction = transactionService.createTransaction(
             createTransactionRequest.getStockId(),
@@ -35,7 +35,7 @@ public class TransactionController {
         return ResponseEntity.ok(TransactionResponseFactory.createTransactionResponse(transaction));
     }
 
-    @PostMapping("/stock")
+    @PostMapping
     public ResponseEntity<StockResponse> createStock(CreateStockRequest createStockRequest) {
         Stock stock = transactionService.createStock(
             createStockRequest.getSymbol(),
@@ -45,7 +45,7 @@ public class TransactionController {
         return ResponseEntity.ok(TransactionResponseFactory.createStockResponse(stock));
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<TransactionListResponse> listTransaction(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "20") int size) {
