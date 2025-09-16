@@ -43,4 +43,13 @@ public class AuthService {
         return jwtUtil.generateToken(username);
     }
 
+    public void changePassword(String username, String oldPassword, String newPassword){
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new AppException("User not found!"));
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new AppException("Invalid old password!");
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
 }
