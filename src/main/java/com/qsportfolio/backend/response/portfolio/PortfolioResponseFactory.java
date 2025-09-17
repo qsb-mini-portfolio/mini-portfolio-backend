@@ -27,7 +27,7 @@ public class PortfolioResponseFactory {
         return new PortfolioResponse(
             portfolioStockResponseList,
             portfolioDTO.getCurrentPrice(),
-            portfolioDTO.getBougthPrice(),
+            portfolioDTO.getBoughtPrice(),
             portfolioDTO.getYield()
         );
     }

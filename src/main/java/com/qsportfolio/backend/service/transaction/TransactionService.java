@@ -6,7 +6,6 @@ import com.qsportfolio.backend.errorHandler.AppException;
 import com.qsportfolio.backend.repository.StockRepository;
 import com.qsportfolio.backend.repository.TransactionRepository;
 import com.qsportfolio.backend.security.SecurityUtils;
-import com.qsportfolio.backend.service.stockPrice.StockPriceRetriever;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

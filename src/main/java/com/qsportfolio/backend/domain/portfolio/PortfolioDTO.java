@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class PortfolioDTO {
     List<PortfolioByStockDTO> portfolioByStockDTOs;
     float currentPrice;
-    float bougthPrice;
+    float boughtPrice;
     float yield;
 }
