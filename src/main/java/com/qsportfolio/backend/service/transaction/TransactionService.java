@@ -6,6 +6,8 @@ import com.qsportfolio.backend.errorHandler.AppException;
 import com.qsportfolio.backend.repository.StockRepository;
 import com.qsportfolio.backend.repository.TransactionRepository;
 import com.qsportfolio.backend.security.SecurityUtils;
+import com.qsportfolio.backend.service.stockPrice.StockPriceRetriever;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +22,9 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final StockRepository stockRepository;
 
-    public TransactionService(TransactionRepository transactionRepository, StockRepository stockRepository) {
+    public TransactionService(
+        TransactionRepository transactionRepository,
+        StockRepository stockRepository) {
         this.transactionRepository = transactionRepository;
         this.stockRepository = stockRepository;
     }
@@ -53,9 +57,11 @@ public class TransactionService {
 
     public Stock createStock(String symbol, String name) {
         Stock stock = new Stock(
-                UUID.randomUUID(),
-                symbol,
-                name
+            UUID.randomUUID(),
+            symbol,
+            name,
+            null,
+            null
         );
         stockRepository.save(stock);
         return stock;

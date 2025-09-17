@@ -1,6 +1,6 @@
 CREATE TABLE stocks (
     id UUID PRIMARY KEY,
-    symbol VARCHAR(255) NOT NULL,
+    symbol VARCHAR(255) NOT NULL UNIQUE,
     name VARCHAR(255) NOT NULL
 );
 

@@ -53,6 +53,4 @@ public class TransactionController {
 
         return ResponseEntity.ok(TransactionResponseFactory.createTransactionListResponse(pagination));
     }
-
-
 }

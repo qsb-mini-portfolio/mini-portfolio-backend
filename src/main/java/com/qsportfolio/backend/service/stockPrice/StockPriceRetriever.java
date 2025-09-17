@@ -1,0 +1,10 @@
+package com.qsportfolio.backend.service.stockPrice;
+
+import com.qsportfolio.backend.domain.transaction.Stock;
+
+import java.time.LocalDateTime;
+
+public interface StockPriceRetriever {
+    float retrievePriceForStock(Stock stock, LocalDateTime date);
+    float retrievePriceForStock(Stock stock);
+}

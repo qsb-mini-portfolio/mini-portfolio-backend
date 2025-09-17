@@ -1,0 +1,3 @@
+ALTER TABLE stocks
+ADD COLUMN price_date TIMESTAMP,
+ADD COLUMN last_price FLOAT4;
