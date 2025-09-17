@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/transaction")
 public class TransactionController {
@@ -24,7 +26,7 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<TransactionResponse> createTransaction(CreateTransactionRequest createTransactionRequest) {
+    public ResponseEntity<TransactionResponse> createTransaction(@RequestBody CreateTransactionRequest createTransactionRequest) {
         Transaction transaction = transactionService.createTransaction(
             createTransactionRequest.getStockId(),
             createTransactionRequest.getVolume(),
@@ -33,6 +35,15 @@ public class TransactionController {
         );
 
         return ResponseEntity.ok(TransactionResponseFactory.createTransactionResponse(transaction));
+    }
+
+    @GetMapping("/stock/{symbol}")
+    public ResponseEntity<StockResponse> getStock(@PathVariable String symbol) {
+        return ResponseEntity.ok(
+                TransactionResponseFactory.createStockResponse(
+                        transactionService.getStockBySymbol(symbol)
+                )
+        );
     }
 
     @PostMapping("/stock")

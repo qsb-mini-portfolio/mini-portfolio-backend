@@ -3,6 +3,7 @@ package com.qsportfolio.backend.service.transaction;
 import com.qsportfolio.backend.domain.transaction.Stock;
 import com.qsportfolio.backend.domain.transaction.Transaction;
 import com.qsportfolio.backend.errorHandler.AppException;
+import com.qsportfolio.backend.errorHandler.StockNotFoundException;
 import com.qsportfolio.backend.repository.StockRepository;
 import com.qsportfolio.backend.repository.TransactionRepository;
 import com.qsportfolio.backend.security.SecurityUtils;
@@ -64,5 +65,9 @@ public class TransactionService {
         );
         stockRepository.save(stock);
         return stock;
+    }
+
+    public Stock getStockBySymbol(String symbol) {
+        return stockRepository.findFirstBySymbol(symbol).orElseThrow(() -> new StockNotFoundException(symbol));
     }
 }
