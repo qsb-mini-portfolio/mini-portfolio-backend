@@ -6,19 +6,19 @@ import com.qsportfolio.backend.request.auth.RegisterRequest;
 import com.qsportfolio.backend.service.auth.AuthService;
 import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
+import com.qsportfolio.backend.security.JWTUtil;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
     private final AuthService authService;
+    private final JWTUtil jwtUtil;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, JWTUtil jwtUtil) {
+
+        this.jwtUtil = jwtUtil;
         this.authService = authService;
     }
 
@@ -40,4 +40,11 @@ public class AuthController {
         authService.changePassword(username, request.getOldPassword(), request.getNewPassword());
         return ResponseEntity.ok("Password changed successfully!");
     }
+
+    @GetMapping("/checkAuth")
+    public ResponseEntity<Boolean> checkAuth(@RequestParam String token) {
+        return ResponseEntity.ok(jwtUtil.validateToken(token));
+    }
+
+
 }
