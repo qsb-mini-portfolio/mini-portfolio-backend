@@ -1,6 +1,7 @@
 stages:
   - build
   - deploy
+  - deploy-page
 
 variables:
   ECR_REPOSITORY: backend
@@ -41,5 +42,17 @@ deploy-staging:
     - main
   dependencies:
     - build-and-push
+
+pages:
+  stage: deploy-page
+  script:
+    - mkdir .public
+    - cp -r public/* .public
+    - mv .public public
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
 
 
