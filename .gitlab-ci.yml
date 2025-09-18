@@ -1,6 +1,7 @@
 stages:
   - build
   - deploy
+  - deploy-page
 
 variables:
   ECR_REPOSITORY: backend
@@ -41,5 +42,17 @@ deploy-staging:
     - main
   dependencies:
     - build-and-push
+
+pages:
+  stage: deploy-page
+  script:
+    - mkdir .swagger-ui
+    - cp -r swagger-ui/* .swagger-ui
+    - mv .swagger-ui swagger-ui
+  artifacts:
+    paths:
+      - swagger-ui
+  only:
+    - main
 
 
