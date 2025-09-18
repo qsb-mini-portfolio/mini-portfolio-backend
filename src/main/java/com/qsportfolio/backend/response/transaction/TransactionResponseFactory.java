@@ -2,6 +2,8 @@ package com.qsportfolio.backend.response.transaction;
 
 import com.qsportfolio.backend.domain.transaction.Stock;
 import com.qsportfolio.backend.domain.transaction.Transaction;
+import com.qsportfolio.backend.response.stock.StockResponse;
+import com.qsportfolio.backend.response.stock.StockResponseFactory;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -13,7 +15,7 @@ public final class TransactionResponseFactory {
     public static TransactionResponse createTransactionResponse(Transaction transaction) {
          return new TransactionResponse(
             transaction.getId(),
-            createStockResponse(transaction.getStock()),
+            StockResponseFactory.createStockResponse(transaction.getStock()),
             transaction.getPrice(),
             transaction.getVolume(),
             transaction.getDate()
@@ -29,13 +31,5 @@ public final class TransactionResponseFactory {
             transactionResponseList,
             transactionsPage.getNumber(),
             transactionsPage.getNumberOfElements());
-    }
-
-    public static StockResponse createStockResponse(Stock stock) {
-        return new StockResponse(
-                stock.getId(),
-                stock.getSymbol(),
-                stock.getName()
-        );
     }
 }

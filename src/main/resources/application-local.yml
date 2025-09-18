@@ -1,5 +1,5 @@
 jwt_secret: e113ae30-637c-4314-8215-6384b117aa3d
-polygon_api_key: SECRET_KEY
+polygon_api_key: ${POLYGON_API_KEY}
 
 spring:
   datasource:

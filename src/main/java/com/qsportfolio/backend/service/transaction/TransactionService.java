@@ -54,20 +54,4 @@ public class TransactionService {
         Pageable pageable = PageRequest.of(page, size);
         return transactionRepository.findByUserId(SecurityUtils.getCurrentUser().getId(), pageable);
     }
-
-    public Stock createStock(String symbol, String name) {
-        Stock stock = new Stock(
-            UUID.randomUUID(),
-            symbol,
-            name,
-            null,
-            null
-        );
-        stockRepository.save(stock);
-        return stock;
-    }
-
-    public Stock getStockBySymbol(String symbol) {
-        return stockRepository.findFirstBySymbol(symbol).orElseThrow(() -> new StockNotFoundException(symbol));
-    }
 }

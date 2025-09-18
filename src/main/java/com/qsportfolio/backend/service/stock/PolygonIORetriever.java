@@ -1,4 +1,4 @@
-package com.qsportfolio.backend.service.stockPrice;
+package com.qsportfolio.backend.service.stock;
 
 import com.qsportfolio.backend.domain.transaction.Stock;
 import com.qsportfolio.backend.errorHandler.AppException;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 @Service
-public class PolygonIORetriever implements StockPriceRetriever {
+public class PolygonIORetriever implements StockPriceRetriever, StockInfoRetriever {
 
     private final WebClient webClient;
 
@@ -48,13 +48,13 @@ public class PolygonIORetriever implements StockPriceRetriever {
         String formattedDate = dateTime.toLocalDate().toString();
         long targetMillis = dateTime.toInstant(ZoneOffset.UTC).toEpochMilli();
 
-        PolygonResponse response = webClient.get()
+        PolygonPriceResponse response = webClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path("/v2/aggs/ticker/{symbol}/range/1/minute/{from}/{to}")
                 .queryParam("apiKey", apiKey)
                 .build(stock.getSymbol(), formattedDate, formattedDate))
             .retrieve()
-            .bodyToMono(PolygonResponse.class)
+            .bodyToMono(PolygonPriceResponse.class)
             .block();
 
         if (response != null && response.getResults() != null) {
@@ -70,18 +70,35 @@ public class PolygonIORetriever implements StockPriceRetriever {
 
     @Override
     public float retrievePriceForStock(Stock stock) {
-
-        PolygonResponse response = webClient.get()
+        PolygonPriceResponse response = webClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path("/v2/aggs/ticker/{symbol}/prev")
                 .queryParam("apiKey", apiKey)
                 .build(stock.getSymbol()))
             .retrieve()
-            .bodyToMono(PolygonResponse.class)
+            .bodyToMono(PolygonPriceResponse.class)
             .block();
 
         try {
             return response.getResults().get(0).getC();
+        } catch (Exception e) {
+            throw new AppException("No data for " + stock.getSymbol());
+        }
+    }
+
+    @Override
+    public StockType retrieveStockTypeInformation(Stock stock) {
+        PolygonTypeResponse response = webClient.get()
+            .uri(uriBuilder -> uriBuilder
+                .path("/v3/reference/tickers/{symbol}")
+                .queryParam("apiKey", apiKey)
+                .build(stock.getSymbol()))
+            .retrieve()
+            .bodyToMono(PolygonTypeResponse.class)
+            .block();
+
+        try {
+            return StockType.fromSicCode(Integer.parseInt(response.getResults().getSic_code()));
         } catch (Exception e) {
             throw new AppException("No data for " + stock.getSymbol());
         }
