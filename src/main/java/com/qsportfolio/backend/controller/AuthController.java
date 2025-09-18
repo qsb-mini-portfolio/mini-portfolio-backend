@@ -41,7 +41,7 @@ public class AuthController {
         return ResponseEntity.ok("Password changed successfully!");
     }
 
-    @GetMapping("/checkAuth")
+    @PostMapping("/checkAuth")
     public ResponseEntity<Boolean> checkAuth(@RequestParam String token) {
         return ResponseEntity.ok(jwtUtil.validateToken(token));
     }
