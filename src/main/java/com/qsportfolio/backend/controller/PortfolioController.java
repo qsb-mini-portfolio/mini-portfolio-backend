@@ -2,7 +2,6 @@ package com.qsportfolio.backend.controller;
 
 import com.qsportfolio.backend.response.portfolio.PortfolioResponse;
 import com.qsportfolio.backend.response.portfolio.PortfolioResponseFactory;
-import com.qsportfolio.backend.response.portfolio.PortfolioStockResponse;
 import com.qsportfolio.backend.service.PortfolioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +24,7 @@ public class PortfolioController {
         return ResponseEntity.ok(portfolioService.getStockCurrentPrice(symbol));
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<PortfolioResponse> getPortfolio() {
         return ResponseEntity.ok(PortfolioResponseFactory.createPortfolioResponse(portfolioService.getPortfolio()));
     }
