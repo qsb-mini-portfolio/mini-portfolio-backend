@@ -55,7 +55,7 @@ public class PortfolioService {
         float boughtPortfolioPrice = 0;
         for (PortfolioByStockDTO portfolioByStockDTO : portfolioByStockDTOs) {
             try {
-                float price = getStockCurrentPrice(portfolioByStockDTO.getStock());
+                float price = getStockCurrentPrice(portfolioByStockDTO.getStock()) * portfolioByStockDTO.getVolume();
                 portfolioPrice += price;
                 boughtPortfolioPrice += portfolioByStockDTO.getBoughtPrice();
                 portfolioByStockDTO.setCurrentPrice(price);
