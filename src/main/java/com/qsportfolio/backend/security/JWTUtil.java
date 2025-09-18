@@ -8,6 +8,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 
 import java.util.Date;
 
@@ -33,4 +34,19 @@ public class JWTUtil {
         DecodedJWT jwt = verifier.verify(token);
         return jwt.getClaim("username").asString();
     }
+
+    public Boolean validateToken(String token) throws JWTVerificationException {
+        try{
+            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret))
+                    .withIssuer("YOUR APPLICATION/PROJECT/COMPANY NAME")
+                    .build();
+            DecodedJWT jwt = verifier.verify(token);
+            return true;
+        }
+        catch(JWTVerificationException e) {
+            return false;
+        }
+    }
+
+
 }
