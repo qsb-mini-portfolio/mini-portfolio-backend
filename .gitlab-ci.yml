@@ -46,12 +46,12 @@ deploy-staging:
 pages:
   stage: deploy-page
   script:
-    - mkdir .swagger-ui
-    - cp -r swagger-ui/* .swagger-ui
-    - mv .swagger-ui swagger-ui
+    - mkdir .public
+    - cp -r public/* .public
+    - mv .public public
   artifacts:
     paths:
-      - swagger-ui
+      - public
   only:
     - main
 
