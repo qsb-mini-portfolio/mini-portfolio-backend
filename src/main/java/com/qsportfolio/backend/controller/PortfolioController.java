@@ -2,7 +2,6 @@ package com.qsportfolio.backend.controller;
 
 import com.qsportfolio.backend.response.portfolio.PortfolioResponse;
 import com.qsportfolio.backend.response.portfolio.PortfolioResponseFactory;
-import com.qsportfolio.backend.response.portfolio.PortfolioStockResponse;
 import com.qsportfolio.backend.service.PortfolioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

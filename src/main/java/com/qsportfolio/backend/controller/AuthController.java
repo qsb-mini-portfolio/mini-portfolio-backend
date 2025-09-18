@@ -4,7 +4,6 @@ import com.qsportfolio.backend.request.auth.LoginRequest;
 import com.qsportfolio.backend.request.auth.NewPasswordRequest;
 import com.qsportfolio.backend.request.auth.RegisterRequest;
 import com.qsportfolio.backend.service.auth.AuthService;
-import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
