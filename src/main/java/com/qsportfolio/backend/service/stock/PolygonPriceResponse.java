@@ -1,11 +1,11 @@
-package com.qsportfolio.backend.service.stockPrice;
+package com.qsportfolio.backend.service.stock;
 
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class PolygonResponse {
+public class PolygonPriceResponse {
     String ticker;
     int queryCount;
     int resultsCount;

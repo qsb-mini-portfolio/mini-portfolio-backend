@@ -1,9 +1,8 @@
 package com.qsportfolio.backend.domain.transaction;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.qsportfolio.backend.service.stock.StockType;
+import com.qsportfolio.backend.service.stock.StockTypeConverter;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,4 +26,7 @@ public class Stock {
     LocalDateTime priceDate;
     @Column(name = "last_price")
     Float lastPrice;
+    @Column(nullable = false)
+    @Convert(converter = StockTypeConverter.class)
+    StockType type;
 }

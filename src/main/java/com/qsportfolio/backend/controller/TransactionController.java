@@ -1,10 +1,7 @@
 package com.qsportfolio.backend.controller;
 
-import com.qsportfolio.backend.domain.transaction.Stock;
 import com.qsportfolio.backend.domain.transaction.Transaction;
-import com.qsportfolio.backend.request.transaction.CreateStockRequest;
 import com.qsportfolio.backend.request.transaction.CreateTransactionRequest;
-import com.qsportfolio.backend.response.transaction.StockResponse;
 import com.qsportfolio.backend.response.transaction.TransactionListResponse;
 import com.qsportfolio.backend.response.transaction.TransactionResponse;
 import com.qsportfolio.backend.response.transaction.TransactionResponseFactory;
@@ -33,25 +30,6 @@ public class TransactionController {
         );
 
         return ResponseEntity.ok(TransactionResponseFactory.createTransactionResponse(transaction));
-    }
-
-    @GetMapping("/stock/{symbol}")
-    public ResponseEntity<StockResponse> getStock(@PathVariable String symbol) {
-        return ResponseEntity.ok(
-            TransactionResponseFactory.createStockResponse(
-                transactionService.getStockBySymbol(symbol)
-            )
-        );
-    }
-
-    @PostMapping("/stock")
-    public ResponseEntity<StockResponse> createStock(@RequestBody CreateStockRequest createStockRequest) {
-        Stock stock = transactionService.createStock(
-            createStockRequest.getSymbol(),
-            createStockRequest.getName()
-        );
-
-        return ResponseEntity.ok(TransactionResponseFactory.createStockResponse(stock));
     }
 
     @GetMapping

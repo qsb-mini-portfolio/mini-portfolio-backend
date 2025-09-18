@@ -1,6 +1,7 @@
 package com.qsportfolio.backend.response.transaction;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.qsportfolio.backend.response.stock.StockResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

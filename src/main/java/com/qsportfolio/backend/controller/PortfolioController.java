@@ -20,12 +20,7 @@ public class PortfolioController {
         this.portfolioService = portfolioService;
     }
 
-    @GetMapping("/stock/{symbol}")
-    public ResponseEntity<Float> getStockPrice(@PathVariable String symbol) {
-        return ResponseEntity.ok(portfolioService.getStockCurrentPrice(symbol));
-    }
-
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<PortfolioResponse> getPortfolio() {
         return ResponseEntity.ok(PortfolioResponseFactory.createPortfolioResponse(portfolioService.getPortfolio()));
     }
