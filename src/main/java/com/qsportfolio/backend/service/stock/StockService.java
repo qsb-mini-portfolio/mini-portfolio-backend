@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -72,6 +73,10 @@ public class StockService {
         stockRepository.save(stock);
 
         return stockPriceRetriever.retrievePriceForStock(stock);
+    }
+
+    public List<Stock> listAllStocks() {
+        return stockRepository.findAll();
     }
 
 

@@ -2,6 +2,8 @@ package com.qsportfolio.backend.response.stock;
 
 import com.qsportfolio.backend.domain.transaction.Stock;
 
+import java.util.List;
+
 public final class StockResponseFactory {
     public static StockResponse createStockResponse(Stock stock) {
         return new StockResponse(
@@ -9,6 +11,15 @@ public final class StockResponseFactory {
             stock.getSymbol(),
             stock.getName(),
             stock.getType().getDescription()
+        );
+    }
+
+    public static StockListResponse createStockListResponse(List<Stock> stocks) {
+        List<StockResponse> stockResponseList = stocks.stream().map(StockResponseFactory::createStockResponse).toList();
+        return new StockListResponse(
+            stockResponseList,
+            0,
+            stockResponseList.size()
         );
     }
 }
