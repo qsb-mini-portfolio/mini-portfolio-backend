@@ -23,4 +23,6 @@ public class User {
     String username;
     @Column(nullable = false)
     String password;
+    @Column
+    String email;
 }

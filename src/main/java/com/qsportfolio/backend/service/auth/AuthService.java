@@ -21,7 +21,7 @@ public class AuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    public void createUser(String username, String password) {
+    public void createUser(String username, String password, String email  ) {
         if (userRepository.findByUsername(username).isPresent()) {
             throw new AppException("Username already taken!");
         }
@@ -29,7 +29,9 @@ public class AuthService {
         User user = new User(
             UUID.randomUUID(),
             username,
-            passwordEncoder.encode(password));
+            passwordEncoder.encode(password),
+            email
+            );
 
         userRepository.save(user);
     }
