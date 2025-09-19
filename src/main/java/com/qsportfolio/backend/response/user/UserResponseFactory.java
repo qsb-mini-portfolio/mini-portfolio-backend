@@ -6,7 +6,8 @@ public class UserResponseFactory {
 
     public static UserResponse createUserResponse(User user) {
         return new UserResponse(
-                user.getUsername()
+                user.getUsername(),
+                user.getEmail()
         );
     }
 }
