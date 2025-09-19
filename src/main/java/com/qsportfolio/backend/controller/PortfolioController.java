@@ -1,5 +1,6 @@
 package com.qsportfolio.backend.controller;
 
+import com.qsportfolio.backend.response.portfolio.DashboardResponse;
 import com.qsportfolio.backend.response.portfolio.PortfolioResponse;
 import com.qsportfolio.backend.response.portfolio.PortfolioResponseFactory;
 import com.qsportfolio.backend.service.PortfolioService;
@@ -21,5 +22,10 @@ public class PortfolioController {
     @GetMapping
     public ResponseEntity<PortfolioResponse> getPortfolio() {
         return ResponseEntity.ok(PortfolioResponseFactory.createPortfolioResponse(portfolioService.getPortfolio()));
+    }
+
+    @GetMapping("/dashboard")
+    public ResponseEntity<DashboardResponse> getDashboard() {
+        return ResponseEntity.ok(PortfolioResponseFactory.createDashboardResponse(portfolioService.getPortfolio()));
     }
 }
