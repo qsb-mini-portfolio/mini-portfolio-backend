@@ -12,3 +12,8 @@ management:
     web:
       exposure:
         include: health,info
+logging:
+  level:
+    root: INFO
+    org.springframework.web: ERROR
+    com.qsportfolio: DEBUG
