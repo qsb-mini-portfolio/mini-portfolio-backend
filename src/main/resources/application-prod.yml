@@ -1,8 +1,8 @@
 jwt_secret: ${JWT_SECRET}
-polygon_api_key: ${POLYGON_KEY}
+polygon_api_key: ${POLYGON_API_KEY}
 
 spring:
   datasource:
-    url: ${JDBC_URL}
-    username: ${DB_USERNAME}
+    url: jdbc:postgresql://portfolio-stagging.chys24quknwb.eu-north-1.rds.amazonaws.com:5432/postgres
+    username: portfolio
     password: ${DB_PASSWORD}
