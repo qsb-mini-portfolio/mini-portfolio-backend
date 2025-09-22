@@ -37,26 +37,23 @@ deploy-staging:
     AWS_DEFAULT_REGION: "eu-north-1"
     EKS_CLUSTER_NAME: "portfolio-backend"
   script:
-    # Créer le dossier kubeconfig
-    - mkdir -p $HOME/.kube
-  
+    # Créer un kubeconfig temporaire dans le dossier de travail
+    - export KUBECONFIG=$CI_PROJECT_DIR/kubeconfig_temp
+
     # Configurer AWS
     - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
     - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
     - aws configure set default.region $AWS_DEFAULT_REGION
-  
-    # Générer kubeconfig dans le fichier voulu
-    - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $EKS_CLUSTER_NAME --kubeconfig $HOME/.kube/config --alias portfolio-backend
-  
-    # S’assurer que kubectl lit le bon fichier
-    - export KUBECONFIG=$HOME/.kube/config
-  
-    # Tester la connexion
+
+    # Générer le kubeconfig pour le cluster
+    - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $EKS_CLUSTER_NAME --kubeconfig $KUBECONFIG
+
+    # Vérifier la connexion au cluster
     - kubectl get nodes
-  
-    # Déployer
+
+    # Appliquer les manifests
     - kubectl apply -f k8s/backend-staging.yaml
-  
+
   only:
     - main
   dependencies:
