@@ -23,9 +23,6 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod
-          envFrom:
-            - secretRef:
-                name: stagging-backend-env
 ---
 apiVersion: v1
 kind: Service
