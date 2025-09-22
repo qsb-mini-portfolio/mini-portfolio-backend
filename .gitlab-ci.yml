@@ -41,6 +41,7 @@ deploy-staging:
     - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $EKS_CLUSTER_NAME
     - kubectl apply --validate=false -f k8s/aws-auth.yaml
     - kubectl apply -f k8s/backend-staging.yaml
+    - kubectl rollout restart deployment/backend-staging
 
   only:
     - main
