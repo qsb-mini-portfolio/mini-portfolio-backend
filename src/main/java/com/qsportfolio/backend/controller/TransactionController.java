@@ -1,24 +1,31 @@
 package com.qsportfolio.backend.controller;
 
 import com.qsportfolio.backend.domain.transaction.Transaction;
+import com.qsportfolio.backend.domain.user.User;
 import com.qsportfolio.backend.request.transaction.CreateTransactionRequest;
 import com.qsportfolio.backend.response.transaction.TransactionListResponse;
 import com.qsportfolio.backend.response.transaction.TransactionResponse;
 import com.qsportfolio.backend.response.transaction.TransactionResponseFactory;
+import com.qsportfolio.backend.service.transaction.TransactionImportService;
 import com.qsportfolio.backend.service.transaction.TransactionService;
+import com.qsportfolio.backend.service.user.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/transaction")
+@RequiredArgsConstructor
 public class TransactionController {
 
     private final TransactionService transactionService;
-
-    public TransactionController(TransactionService transactionService) {
-        this.transactionService = transactionService;
-    }
+    private final UserService userService;
+    private final TransactionImportService transactionImportService;
 
     @PostMapping
     public ResponseEntity<TransactionResponse> createTransaction(@RequestBody CreateTransactionRequest createTransactionRequest) {
@@ -30,6 +37,14 @@ public class TransactionController {
         );
 
         return ResponseEntity.ok(TransactionResponseFactory.createTransactionResponse(transaction));
+    }
+
+    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public TransactionImportService.Result importCsv(
+        @RequestParam("file") MultipartFile file
+        ) throws IOException {
+        User user = userService.getUser();
+        return transactionImportService.importTransactionCsv(user.getId(), file.getInputStream());
     }
 
     @GetMapping

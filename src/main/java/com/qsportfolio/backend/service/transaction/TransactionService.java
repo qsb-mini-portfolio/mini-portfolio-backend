@@ -37,14 +37,14 @@ public class TransactionService {
 
         Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new AppException("Stock ID doesn't exist"));
 
-        Transaction transaction = new Transaction(
-            UUID.randomUUID(),
-            stock,
-            SecurityUtils.getCurrentUser().getId(),
-            date,
-            price,
-            volume
-        );
+        Transaction transaction = new Transaction();
+
+        transaction.setStock(stock);
+        transaction.setUserId(SecurityUtils.getCurrentUser().getId());
+        transaction.setDate(date);
+        transaction.setPrice(price);
+        transaction.setVolume(volume);
+        transaction.setDate(date);
 
         transactionRepository.save(transaction);
         return transaction;

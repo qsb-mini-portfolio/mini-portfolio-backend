@@ -17,6 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Stock {
     @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
     UUID id;
     @Column(nullable = false)
     String symbol;

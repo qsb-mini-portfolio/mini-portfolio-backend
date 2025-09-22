@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -25,14 +26,15 @@ public class StockService {
     }
 
     public Stock createStock(String symbol, String name) {
-        Stock stock = new Stock(
-            UUID.randomUUID(),
-            symbol,
-            name,
-            null,
-            null,
-            StockType.OTHER
-        );
+        Optional<Stock> optionalStock = stockRepository.findFirstBySymbol(symbol);
+        if (optionalStock.isPresent()) {
+            return optionalStock.get();
+        }
+
+        Stock stock = new Stock();
+        stock.setSymbol(symbol);
+        stock.setName(name);
+        stock.setType(StockType.OTHER);
         try {
             float lastPrice = stockPriceRetriever.retrievePriceForStock(stock);
             stock.setLastPrice(lastPrice);
