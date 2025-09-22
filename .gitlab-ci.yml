@@ -37,10 +37,8 @@ deploy-staging:
     AWS_DEFAULT_REGION: "eu-north-1"
     EKS_CLUSTER_NAME: "portfolio-cluster"
   script:
-    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-    - aws configure set default.region $AWS_DEFAULT_REGION
-    - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $EKS_CLUSTER_NAME --kubeconfig $KUBECONFIG
+    - aws sts get-caller-identity
+    - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $EKS_CLUSTER_NAME
     - kubectl apply --validate=false -f k8s/aws-auth.yaml
     - kubectl apply -f k8s/backend-staging.yaml
 
