@@ -5,7 +5,7 @@ stages:
 
 variables:
   ECR_REPOSITORY: backend
-  EKS_CLUSTER_NAME: stagging-cluster
+  EKS_CLUSTER_NAME: portfolio-backend
 
 build-and-push:
   stage: build
