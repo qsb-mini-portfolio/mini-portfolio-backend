@@ -5,7 +5,7 @@ metadata:
   namespace: kube-system
 data:
   mapUsers: |
-    - userarn: arn:aws:iam::958972464858:user/GitlabRunner
-      username: gitlab-runner
+    - userarn: arn:aws:iam::054799132871:user/EKS-Deployer
+      username: eks-deployer
       groups:
         - system:masters
