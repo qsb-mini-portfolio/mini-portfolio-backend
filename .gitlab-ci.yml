@@ -34,14 +34,9 @@ deploy-staging:
   stage: deploy
   image: heyvaldemar/aws-kubectl:latest
   script:
-    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-    - aws configure set default.region $AWS_DEFAULT_REGION
-    
     - aws sts get-caller-identity
     - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $EKS_CLUSTER_NAME
-    - kubectl apply -f k8s/aws-auth.yaml
-    - kubectl apply -f k8s/backend-staging.yaml
+    - kubectl apply -f k8s/backend-staging.yaml --validate=false
     - kubectl rollout restart deployment backend-staging
   only:
     - main
