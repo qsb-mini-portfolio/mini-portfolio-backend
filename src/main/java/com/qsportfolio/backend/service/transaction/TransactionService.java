@@ -7,6 +7,7 @@ import com.qsportfolio.backend.repository.StockRepository;
 import com.qsportfolio.backend.repository.TransactionRepository;
 import com.qsportfolio.backend.repository.UserRepository;
 import com.qsportfolio.backend.security.SecurityUtils;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -60,6 +61,8 @@ public class TransactionService {
     ///
     /// FOR DEMO PURPOSE ONLY DO NOT USE
     ///
+    ///
+    @Transactional
     public void deleteAllTransactionForDemo() {
         transactionRepository.deleteByUserId(userRepository.findByUsername("demo").orElseThrow(() -> new AppException("Unable to find the demo user")).getId());
     }
