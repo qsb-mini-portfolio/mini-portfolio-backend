@@ -3,11 +3,10 @@ package com.qsportfolio.backend.service.transaction;
 import com.qsportfolio.backend.domain.transaction.Stock;
 import com.qsportfolio.backend.domain.transaction.Transaction;
 import com.qsportfolio.backend.errorHandler.AppException;
-import com.qsportfolio.backend.errorHandler.StockNotFoundException;
 import com.qsportfolio.backend.repository.StockRepository;
 import com.qsportfolio.backend.repository.TransactionRepository;
+import com.qsportfolio.backend.repository.UserRepository;
 import com.qsportfolio.backend.security.SecurityUtils;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,12 +20,15 @@ public class TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final StockRepository stockRepository;
+    private final UserRepository userRepository; // DO NO USE ONLY FOR DEMO PURPOSE !!!
 
     public TransactionService(
         TransactionRepository transactionRepository,
-        StockRepository stockRepository) {
+        StockRepository stockRepository,
+        UserRepository userRepository) {
         this.transactionRepository = transactionRepository;
         this.stockRepository = stockRepository;
+        this.userRepository = userRepository;
     }
 
     public Transaction createTransaction(
@@ -53,5 +55,12 @@ public class TransactionService {
     public Page<Transaction> listTransaction(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return transactionRepository.findByUserId(SecurityUtils.getCurrentUser().getId(), pageable);
+    }
+
+    ///
+    /// FOR DEMO PURPOSE ONLY DO NOT USE
+    ///
+    public void deleteAllTransactionForDemo() {
+        transactionRepository.deleteByUserId(userRepository.findByUsername("demo").orElseThrow(() -> new AppException("Unable to find the demo user")).getId());
     }
 }

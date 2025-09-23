@@ -2,17 +2,11 @@ package com.qsportfolio.backend.service;
 
 import com.qsportfolio.backend.domain.portfolio.PortfolioByStockDTO;
 import com.qsportfolio.backend.domain.portfolio.PortfolioDTO;
-import com.qsportfolio.backend.domain.transaction.Stock;
-import com.qsportfolio.backend.errorHandler.AppException;
-import com.qsportfolio.backend.repository.StockRepository;
 import com.qsportfolio.backend.repository.TransactionRepository;
 import com.qsportfolio.backend.security.SecurityUtils;
-import com.qsportfolio.backend.service.stock.StockPriceRetriever;
 import com.qsportfolio.backend.service.stock.StockService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service

@@ -22,4 +22,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
         "WHERE t.userId = :userId " +
         "GROUP BY t.stock")
     public List<PortfolioByStockDTO> getPortfolioGroupByStockFromUser(UUID userId);
+
+    public void deleteByUserId(UUID userId);
 }
