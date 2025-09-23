@@ -19,6 +19,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
     @Query("SELECT new com.qsportfolio.backend.domain.portfolio.PortfolioByStockDTO(t.stock, SUM(t.volume), SUM(t.volume * t.price)) " +
         "FROM Transaction t " +
         "JOIN t.stock s " +
+        "WHERE t.userId = :userId " +
         "GROUP BY t.stock")
-    public List<PortfolioByStockDTO> getPortfolioGroupByStock();
+    public List<PortfolioByStockDTO> getPortfolioGroupByStockFromUser(UUID userId);
 }

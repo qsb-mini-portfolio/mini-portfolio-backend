@@ -6,6 +6,7 @@ import com.qsportfolio.backend.domain.transaction.Stock;
 import com.qsportfolio.backend.errorHandler.AppException;
 import com.qsportfolio.backend.repository.StockRepository;
 import com.qsportfolio.backend.repository.TransactionRepository;
+import com.qsportfolio.backend.security.SecurityUtils;
 import com.qsportfolio.backend.service.stock.StockPriceRetriever;
 import com.qsportfolio.backend.service.stock.StockService;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class PortfolioService {
     }
 
     public PortfolioDTO getPortfolio() {
-        List<PortfolioByStockDTO> portfolioByStockDTOs = transactionRepository.getPortfolioGroupByStock();
+        List<PortfolioByStockDTO> portfolioByStockDTOs = transactionRepository.getPortfolioGroupByStockFromUser(SecurityUtils.getCurrentUser().getId());
 
         float portfolioPrice = 0;
         float boughtPortfolioPrice = 0;
