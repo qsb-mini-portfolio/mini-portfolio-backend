@@ -54,13 +54,10 @@ public class StockService {
         return stock;
     }
 
-    public float getStockCurrentPrice(String symbol) {
-        Stock stock = stockRepository.findFirstBySymbol(symbol).orElseThrow(() -> new AppException("Stock Symbol doesn't exist"));
-        return getStockCurrentPrice(stock);
-    }
-
     public Stock getStockBySymbol(String symbol) {
-        return stockRepository.findFirstBySymbol(symbol).orElseThrow(() -> new StockNotFoundException(symbol));
+        Stock stock = stockRepository.findFirstBySymbol(symbol).orElseThrow(() -> new StockNotFoundException(symbol));
+        updateStockPrice(stock);
+        return stock;
     }
 
     public float getStockCurrentPrice(Stock stock) {
@@ -74,12 +71,33 @@ public class StockService {
         stock.setPriceDate(LocalDateTime.now());
         stockRepository.save(stock);
 
-        return stockPriceRetriever.retrievePriceForStock(stock);
+        return lastPrice;
     }
 
     public List<Stock> listAllStocks() {
-        return stockRepository.findAll();
+        List<Stock> stocks = stockRepository.findAll();
+        for (Stock stock : stocks) {
+            updateStockPrice(stock);
+        }
+        return stocks;
     }
 
+    public void updateStockPrice(Stock stock) {
+        if (stock.getPriceDate() != null) {
+            LocalDateTime fiveMinutesAgo = LocalDateTime.now().minusMinutes(5);
+            if (stock.getPriceDate().isAfter(fiveMinutesAgo)) {
+                return;
+            }
+        }
 
+        try {
+            float lastPrice = stockPriceRetriever.retrievePriceForStock(stock);
+
+            stock.setLastPrice(lastPrice);
+            stock.setPriceDate(LocalDateTime.now());
+            stockRepository.save(stock);
+        } catch (Exception e) {
+            // Do nothing
+        }
+    }
 }

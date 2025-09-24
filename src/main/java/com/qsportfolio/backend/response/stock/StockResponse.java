@@ -14,5 +14,6 @@ public class StockResponse {
     String symbol;
     String name;
     String type;
+    float price;
 }
 

@@ -10,7 +10,8 @@ public final class StockResponseFactory {
             stock.getId(),
             stock.getSymbol(),
             stock.getName(),
-            stock.getType().getDescription()
+            stock.getType().getDescription(),
+            stock.getLastPrice()
         );
     }
 

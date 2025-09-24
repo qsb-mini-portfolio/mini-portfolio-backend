@@ -1,5 +1,6 @@
 jwt_secret: ${JWT_SECRET}
 polygon_api_key: ${POLYGON_API_KEY}
+finnhub_api_key: ${FINNHUB_API_KEY}
 
 spring:
   datasource:

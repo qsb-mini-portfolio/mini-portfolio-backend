@@ -2,11 +2,12 @@ package com.qsportfolio.backend.service.stock;
 
 import com.qsportfolio.backend.domain.transaction.Stock;
 import com.qsportfolio.backend.errorHandler.AppException;
+import com.qsportfolio.backend.service.stock.response.FinnhubPriceResponse;
 import com.qsportfolio.backend.service.stock.response.PolygonPriceResponse;
-import com.qsportfolio.backend.service.stock.response.PolygonTypeResponse;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -15,14 +16,15 @@ import reactor.netty.http.client.HttpClient;
 import javax.net.ssl.SSLException;
 
 @Service
-public class PolygonIORetriever implements StockPriceRetriever, StockInfoRetriever {
+@Primary
+public class FinnhubRetriever implements StockPriceRetriever {
 
     private final WebClient webClient;
 
-    @Value("${polygon_api_key}")
+    @Value("${finnhub_api_key}")
     private String apiKey;
 
-    public PolygonIORetriever(WebClient.Builder webClientBuilder) {
+    public FinnhubRetriever(WebClient.Builder webClientBuilder) {
         this.webClient = WebClient.builder()
             .clientConnector(new ReactorClientHttpConnector(
                 HttpClient.create()
@@ -38,44 +40,26 @@ public class PolygonIORetriever implements StockPriceRetriever, StockInfoRetriev
                         }
                     })
             ))
-            .baseUrl("https://api.polygon.io")
+            .baseUrl("https://finnhub.io")
             .build();
 
     }
 
     @Override
     public float retrievePriceForStock(Stock stock) {
-        PolygonPriceResponse response = webClient.get()
+        FinnhubPriceResponse response = webClient.get()
             .uri(uriBuilder -> uriBuilder
-                .path("/v2/aggs/ticker/{symbol}/prev")
-                .queryParam("apiKey", apiKey)
-                .build(stock.getSymbol()))
+                .path("/api/v1/quote")
+                .queryParam("symbol", stock.getSymbol())
+                .queryParam("token", apiKey)
+                .build())
             .retrieve()
-            .bodyToMono(PolygonPriceResponse.class)
+            .bodyToMono(FinnhubPriceResponse.class)
             .block();
 
-        try {
-            return response.getResults().get(0).getC();
-        } catch (Exception e) {
+        if (response == null) {
             throw new AppException("No data for " + stock.getSymbol());
         }
-    }
-
-    @Override
-    public StockType retrieveStockTypeInformation(Stock stock) {
-        PolygonTypeResponse response = webClient.get()
-            .uri(uriBuilder -> uriBuilder
-                .path("/v3/reference/tickers/{symbol}")
-                .queryParam("apiKey", apiKey)
-                .build(stock.getSymbol()))
-            .retrieve()
-            .bodyToMono(PolygonTypeResponse.class)
-            .block();
-
-        try {
-            return StockType.fromSicCode(Integer.parseInt(response.getResults().getSic_code()));
-        } catch (Exception e) {
-            throw new AppException("No data for " + stock.getSymbol());
-        }
+        return response.getC();
     }
 }

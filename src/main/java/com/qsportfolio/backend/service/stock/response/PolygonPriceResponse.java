@@ -1,4 +1,4 @@
-package com.qsportfolio.backend.service.stock;
+package com.qsportfolio.backend.service.stock.response;
 
 import lombok.Data;
 
