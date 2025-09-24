@@ -1,10 +1,12 @@
 package com.qsportfolio.backend.controller;
 
 import com.qsportfolio.backend.request.users.ChangeEmailRequest;
+import com.qsportfolio.backend.service.user.FavoriteStockService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.qsportfolio.backend.domain.user.User;
 import com.qsportfolio.backend.service.user.UserService;
+import com.qsportfolio.backend.service.user.FavoriteStockService;
 import com.qsportfolio.backend.response.user.UserResponseFactory;
 import com.qsportfolio.backend.response.user.UserResponse;
 
@@ -13,9 +15,11 @@ import com.qsportfolio.backend.response.user.UserResponse;
 public class UserController {
 
     private final UserService userService;
+    private final FavoriteStockService favoriteStockService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService,  FavoriteStockService favoriteStockService) {
         this.userService = userService;
+        this.favoriteStockService = favoriteStockService;
     }
 
     @GetMapping
@@ -28,5 +32,19 @@ public class UserController {
     public ResponseEntity<UserResponse> modifyUserEmail(@RequestBody ChangeEmailRequest request) {
         User newUser = userService.changeUserEmail(request.getEmail());
         return ResponseEntity.ok(UserResponseFactory.createUserResponse(newUser));
+    }
+
+    @PostMapping("/favoriteStock")
+    public ResponseEntity<String> addFavoriteStock(@RequestBody String stockSymbol){
+        User user =  userService.getUser();
+        favoriteStockService.addFavoriteStock(user, stockSymbol);
+        return ResponseEntity.ok("Successfully added favorite stock");
+    }
+
+    @DeleteMapping("/favoriteStock")
+    public ResponseEntity<String> removeFavoriteStock(@RequestBody String stockSymbol){
+        User user =  userService.getUser();
+        favoriteStockService.removeFavoriteStock(user, stockSymbol);
+        return ResponseEntity.ok("Successfully removed favorite stock");
     }
 }

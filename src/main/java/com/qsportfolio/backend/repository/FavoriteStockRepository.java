@@ -1,6 +1,7 @@
 package com.qsportfolio.backend.repository;
 
 import com.qsportfolio.backend.domain.transaction.Stock;
+import com.qsportfolio.backend.domain.user.FavoriteStock;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,9 +9,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface StockRepository extends JpaRepository<Stock, UUID> {
+public interface FavoriteStockRepository extends JpaRepository<FavoriteStock, UUID> {
 
-    Optional<Stock> findFirstBySymbol(String symbol);
+    public FavoriteStock findByStockIdAndUserId(UUID stockId, UUID userId);
 
-    Optional<Stock> findBySymbol(String stockSymbol);
+
 }
