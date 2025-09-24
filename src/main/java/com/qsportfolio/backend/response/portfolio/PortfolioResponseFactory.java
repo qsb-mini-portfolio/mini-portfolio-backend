@@ -56,11 +56,13 @@ public class PortfolioResponseFactory {
 
     public static DashboardResponse createDashboardResponse(PortfolioDTO portfolioDTO) {
         List<SectorResponse> sectorResponseList = createSectorResponse(portfolioDTO.getPortfolioByStockDTOs());
-        return new DashboardResponse(
-            sectorResponseList,
-            portfolioDTO.getCurrentPrice(),
-            portfolioDTO.getBoughtPrice(),
-            portfolioDTO.getYield()
-        );
+        return DashboardResponse.builder()
+            .sectors(sectorResponseList)
+            .currentPrice(portfolioDTO.getCurrentPrice())
+            .boughtPrice(portfolioDTO.getBoughtPrice())
+            .portfolio(createPortfolioResponse(portfolioDTO))
+            .yield(portfolioDTO.getYield())
+            .build();
+
     }
 }
