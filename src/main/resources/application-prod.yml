@@ -3,6 +3,6 @@ polygon_api_key: ${POLYGON_API_KEY}
 
 spring:
   datasource:
-    url: jdbc:postgresql://aws-1-eu-west-3.pooler.supabase.com:6543/postgres
+    url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
