@@ -2,7 +2,7 @@ package com.qsportfolio.backend.response.portfolio;
 
 import com.qsportfolio.backend.domain.portfolio.PortfolioByStockDTO;
 import com.qsportfolio.backend.domain.portfolio.PortfolioDTO;
-import com.qsportfolio.backend.service.stock.StockType;
+import com.qsportfolio.backend.domain.stock.StockType;
 
 import java.util.ArrayList;
 import java.util.HashMap;

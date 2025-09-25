@@ -1,4 +1,4 @@
-package com.qsportfolio.backend.service.stock;
+package com.qsportfolio.backend.domain.stock;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
