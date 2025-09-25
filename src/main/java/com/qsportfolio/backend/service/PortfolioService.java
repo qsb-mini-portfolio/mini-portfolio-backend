@@ -30,7 +30,7 @@ public class PortfolioService {
         for (PortfolioByStockDTO portfolioByStockDTO : portfolioByStockDTOs) {
             stockService.updateStockPrice(portfolioByStockDTO.getStock());
             if (portfolioByStockDTO.getStock().getLastPrice() != null) {
-                portfolioByStockDTO.setCurrentPrice(portfolioByStockDTO.getStock().getLastPrice());
+                portfolioByStockDTO.setCurrentPrice(portfolioByStockDTO.getStock().getLastPrice() * portfolioByStockDTO.getVolume());
                 portfolioByStockDTO.setYield((portfolioByStockDTO.getCurrentPrice() - portfolioByStockDTO.getBoughtPrice()) / portfolioByStockDTO.getBoughtPrice());
                 portfolioPrice += portfolioByStockDTO.getCurrentPrice();
                 boughtPortfolioPrice += portfolioByStockDTO.getBoughtPrice();
