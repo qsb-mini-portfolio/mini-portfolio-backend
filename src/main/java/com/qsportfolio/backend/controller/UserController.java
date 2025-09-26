@@ -3,6 +3,7 @@ package com.qsportfolio.backend.controller;
 import com.qsportfolio.backend.domain.transaction.Stock;
 import com.qsportfolio.backend.domain.user.FavoriteStock;
 import com.qsportfolio.backend.request.users.ChangeEmailRequest;
+import com.qsportfolio.backend.request.users.CreateFavoriteStockRequest;
 import com.qsportfolio.backend.response.stock.StockResponseFactory;
 import com.qsportfolio.backend.response.user.FavoriteStockResponse;
 import com.qsportfolio.backend.service.user.FavoriteStockService;
@@ -41,16 +42,16 @@ public class UserController {
     }
 
     @PostMapping("/favoriteStock")
-    public ResponseEntity<String> addFavoriteStock(@RequestBody String stockSymbol){
+    public ResponseEntity<String> addFavoriteStock(@RequestBody CreateFavoriteStockRequest request){
         User user =  userService.getUser();
-        favoriteStockService.addFavoriteStock(user, stockSymbol);
+        favoriteStockService.addFavoriteStock(user, request.getStockSymbol());
         return ResponseEntity.ok("Successfully added favorite stock");
     }
 
     @DeleteMapping("/favoriteStock")
-    public ResponseEntity<String> removeFavoriteStock(@RequestBody String stockSymbol){
+    public ResponseEntity<String> removeFavoriteStock(@RequestBody CreateFavoriteStockRequest request){
         User user =  userService.getUser();
-        favoriteStockService.removeFavoriteStock(user, stockSymbol);
+        favoriteStockService.removeFavoriteStock(user, request.getStockSymbol());
         return ResponseEntity.ok("Successfully removed favorite stock");
     }
 
