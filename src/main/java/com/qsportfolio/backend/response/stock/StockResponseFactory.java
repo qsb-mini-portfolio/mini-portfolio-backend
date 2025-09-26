@@ -1,6 +1,8 @@
 package com.qsportfolio.backend.response.stock;
 
 import com.qsportfolio.backend.domain.transaction.Stock;
+import com.qsportfolio.backend.response.portfolio.PortfolioStockResponse;
+import com.qsportfolio.backend.response.user.FavoriteStockResponse;
 
 import java.util.List;
 
@@ -21,6 +23,13 @@ public final class StockResponseFactory {
             stockResponseList,
             0,
             stockResponseList.size()
+        );
+    }
+
+    public static FavoriteStockResponse createFavoriteStockResponse(List<Stock> stocks) {
+        List<StockResponse> stockResponseList = stocks.stream().map(StockResponseFactory::createStockResponse).toList();
+        return new FavoriteStockResponse(
+                stockResponseList
         );
     }
 }

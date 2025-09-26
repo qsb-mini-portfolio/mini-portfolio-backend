@@ -6,8 +6,12 @@ import com.qsportfolio.backend.domain.user.FavoriteStock;
 import com.qsportfolio.backend.repository.StockRepository;
 import com.qsportfolio.backend.repository.FavoriteStockRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
+import com.qsportfolio.backend.response.user.FavoriteStockResponse;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -45,6 +49,17 @@ public class FavoriteStockService {
         UUID userId = user.getId();
         FavoriteStock favoriteStock = this.favoriteStockRepository.findByStockIdAndUserId(stockId, userId);
         this.favoriteStockRepository.delete(favoriteStock);
+    }
+
+    public List<Stock> getFavoriteStock(User user) {
+        UUID userId = user.getId();
+        List<FavoriteStock> favoriteStocks = this.favoriteStockRepository.findByUserId(userId);
+        List<UUID> stocksId = favoriteStocks.stream().map(FavoriteStock::getStockId).toList();
+        return stocksId.stream()
+                .map(stockRepository::findById)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList();
     }
 }
 

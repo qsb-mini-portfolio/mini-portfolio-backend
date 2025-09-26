@@ -5,6 +5,7 @@ import com.qsportfolio.backend.domain.user.FavoriteStock;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,5 +14,5 @@ public interface FavoriteStockRepository extends JpaRepository<FavoriteStock, UU
 
     public FavoriteStock findByStockIdAndUserId(UUID stockId, UUID userId);
 
-
+    public List<FavoriteStock> findByUserId(UUID userId);
 }
