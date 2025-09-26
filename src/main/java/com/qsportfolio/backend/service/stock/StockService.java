@@ -1,7 +1,8 @@
 package com.qsportfolio.backend.service.stock;
 
+import com.qsportfolio.backend.domain.stock.StockInfo;
+import com.qsportfolio.backend.domain.stock.StockType;
 import com.qsportfolio.backend.domain.transaction.Stock;
-import com.qsportfolio.backend.errorHandler.AppException;
 import com.qsportfolio.backend.errorHandler.StockNotFoundException;
 import com.qsportfolio.backend.repository.StockRepository;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class StockService {
@@ -44,8 +44,9 @@ public class StockService {
         }
 
         try {
-            StockType type = stockInfoRetriever.retrieveStockTypeInformation(stock);
-            stock.setType(type);
+            StockInfo info = stockInfoRetriever.retrieveStockInformation(stock);
+            stock.setType(info.getType());
+            stock.setName(info.getName());
         } catch (Exception e) {
             // Doesn't throw exception
         }

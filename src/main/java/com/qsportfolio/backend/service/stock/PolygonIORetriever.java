@@ -1,5 +1,7 @@
 package com.qsportfolio.backend.service.stock;
 
+import com.qsportfolio.backend.domain.stock.StockInfo;
+import com.qsportfolio.backend.domain.stock.StockType;
 import com.qsportfolio.backend.domain.transaction.Stock;
 import com.qsportfolio.backend.errorHandler.AppException;
 import com.qsportfolio.backend.service.stock.response.PolygonPriceResponse;
@@ -64,7 +66,7 @@ public class PolygonIORetriever implements StockPriceRetriever, StockInfoRetriev
     }
 
     @Override
-    public StockType retrieveStockTypeInformation(Stock stock) {
+    public StockInfo retrieveStockInformation(Stock stock) {
         PolygonTypeResponse response = webClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path("/v3/reference/tickers/{symbol}")
@@ -75,7 +77,10 @@ public class PolygonIORetriever implements StockPriceRetriever, StockInfoRetriev
             .block();
 
         try {
-            return StockType.fromSicCode(Integer.parseInt(response.getResults().getSic_code()));
+            return new StockInfo(
+                StockType.fromSicCode(Integer.parseInt(response.getResults().getSic_code())),
+                response.getResults().getName()
+            );
         } catch (Exception e) {
             throw new AppException("No data for " + stock.getSymbol());
         }

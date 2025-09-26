@@ -1,7 +1,7 @@
 package com.qsportfolio.backend.domain.transaction;
 
-import com.qsportfolio.backend.service.stock.StockType;
-import com.qsportfolio.backend.service.stock.StockTypeConverter;
+import com.qsportfolio.backend.domain.stock.StockType;
+import com.qsportfolio.backend.domain.stock.StockTypeConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
