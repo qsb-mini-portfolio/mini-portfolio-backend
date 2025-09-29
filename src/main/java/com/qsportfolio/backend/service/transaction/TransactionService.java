@@ -59,13 +59,17 @@ public class TransactionService {
         return transactionRepository.findByUserId(SecurityUtils.getCurrentUser().getId(), pageable);
     }
 
-    public void deleteTransaction(UUID userId, String stockSymbol) {
+    public void deleteTransactions(UUID userId, String stockSymbol) {
         Optional<Stock> stock = this.stockRepository.findBySymbol(stockSymbol);
         if (stock.isEmpty()) {
             throw new IllegalArgumentException("Stock with symbol " + stockSymbol + " not found");
         }
         UUID stockId = stock.get().getId();
         this.transactionRepository.deleteAll(this.transactionRepository.findAllByUserIdAndStockId(userId, stockId));
+    }
+
+    public void deleteTransaction(UUID transactionId) {
+        this.transactionRepository.deleteById(transactionId);
     }
 
     ///

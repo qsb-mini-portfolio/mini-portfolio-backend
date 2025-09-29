@@ -4,6 +4,7 @@ import com.qsportfolio.backend.domain.transaction.Transaction;
 import com.qsportfolio.backend.domain.user.User;
 import com.qsportfolio.backend.request.transaction.CreateTransactionRequest;
 import com.qsportfolio.backend.request.transaction.DeleteTransactionRequest;
+import com.qsportfolio.backend.request.transaction.DeleteTransactionsRequest;
 import com.qsportfolio.backend.response.transaction.TransactionListResponse;
 import com.qsportfolio.backend.response.transaction.TransactionResponse;
 import com.qsportfolio.backend.response.transaction.TransactionResponseFactory;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/transaction")
@@ -59,9 +59,15 @@ public class TransactionController {
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteTransaction(@RequestBody DeleteTransactionRequest request){
+    public ResponseEntity<String> deleteTransactions(@RequestBody DeleteTransactionsRequest request){
         User user = userService.getUser();
-        transactionService.deleteTransaction(user.getId(), request.getStockSymbol());
+        transactionService.deleteTransactions(user.getId(), request.getStockSymbol());
+        return ResponseEntity.ok("Transaction(s) successfully removed !");
+
+    }
+    @DeleteMapping("/id")
+    public ResponseEntity<String> deleteTransaction(@RequestBody DeleteTransactionRequest request){
+        transactionService.deleteTransaction(request.getTransactionId());
         return ResponseEntity.ok("Transaction(s) successfully removed !");
 
     }
