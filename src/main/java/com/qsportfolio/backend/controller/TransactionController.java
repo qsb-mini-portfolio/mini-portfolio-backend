@@ -2,6 +2,7 @@ package com.qsportfolio.backend.controller;
 
 import com.qsportfolio.backend.domain.transaction.Transaction;
 import com.qsportfolio.backend.domain.user.User;
+import com.qsportfolio.backend.request.transaction.UpdateTransactionByIdRequest;
 import com.qsportfolio.backend.request.transaction.CreateTransactionRequest;
 import com.qsportfolio.backend.request.transaction.DeleteTransactionRequest;
 import com.qsportfolio.backend.request.transaction.DeleteTransactionsRequest;
@@ -70,5 +71,11 @@ public class TransactionController {
         transactionService.deleteTransaction(request.getTransactionId());
         return ResponseEntity.ok("Transaction(s) successfully removed !");
 
+    }
+
+    @PutMapping
+    public ResponseEntity<TransactionResponse> updateTransaction(@RequestBody UpdateTransactionByIdRequest updateTransactionByIdRequest) {
+        Transaction transaction = transactionService.updateTransaction(updateTransactionByIdRequest);
+        return ResponseEntity.ok(TransactionResponseFactory.createTransactionResponse(transaction));
     }
 }

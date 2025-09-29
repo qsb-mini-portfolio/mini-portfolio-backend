@@ -6,6 +6,7 @@ import com.qsportfolio.backend.errorHandler.AppException;
 import com.qsportfolio.backend.repository.StockRepository;
 import com.qsportfolio.backend.repository.TransactionRepository;
 import com.qsportfolio.backend.repository.UserRepository;
+import com.qsportfolio.backend.request.transaction.UpdateTransactionByIdRequest;
 import com.qsportfolio.backend.security.SecurityUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -70,6 +71,15 @@ public class TransactionService {
 
     public void deleteTransaction(UUID transactionId) {
         this.transactionRepository.deleteById(transactionId);
+    }
+
+    public Transaction updateTransaction(UpdateTransactionByIdRequest createTransactionByIdRequest) {
+        Transaction oldTransaction = this.transactionRepository.findById(createTransactionByIdRequest.getTransactionId()).orElseThrow(() -> new AppException("Transaction ID doesn't exist"));
+        oldTransaction.setPrice(createTransactionByIdRequest.getPrice());
+        oldTransaction.setVolume(createTransactionByIdRequest.getVolume());
+        oldTransaction.setDate(createTransactionByIdRequest.getDate());
+        this.transactionRepository.save(oldTransaction);
+        return oldTransaction;
     }
 
     ///
