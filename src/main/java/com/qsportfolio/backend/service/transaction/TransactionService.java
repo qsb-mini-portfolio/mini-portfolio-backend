@@ -65,7 +65,7 @@ public class TransactionService {
             throw new IllegalArgumentException("Stock with symbol " + stockSymbol + " not found");
         }
         UUID stockId = stock.get().getId();
-        this.transactionRepository.delete(this.transactionRepository.findByUserIdAndStockId(userId, stockId));
+        this.transactionRepository.deleteAll(this.transactionRepository.findAllByUserIdAndStockId(userId, stockId));
     }
 
     ///

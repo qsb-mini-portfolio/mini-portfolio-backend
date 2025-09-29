@@ -62,7 +62,7 @@ public class TransactionController {
     public ResponseEntity<String> deleteTransaction(@RequestBody DeleteTransactionRequest request){
         User user = userService.getUser();
         transactionService.deleteTransaction(user.getId(), request.getStockSymbol());
-        return ResponseEntity.ok("Transaction successfully removed !");
+        return ResponseEntity.ok("Transaction(s) successfully removed !");
 
     }
 }
