@@ -18,7 +18,6 @@ import reactor.netty.http.client.HttpClient;
 import javax.net.ssl.SSLException;
 
 @Service
-@Primary
 public class PolygonIORetriever implements StockPriceRetriever, StockInfoRetriever {
 
     private final WebClient webClient;
