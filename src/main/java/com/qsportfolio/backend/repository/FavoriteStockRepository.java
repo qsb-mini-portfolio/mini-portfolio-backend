@@ -14,5 +14,5 @@ public interface FavoriteStockRepository extends JpaRepository<FavoriteStock, UU
 
     public FavoriteStock findByStockIdAndUserId(UUID stockId, UUID userId);
 
-    public List<FavoriteStock> findByUserId(UUID userId);
+    public List<FavoriteStock> findByUserId(UUID stockId);
 }

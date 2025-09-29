@@ -3,6 +3,7 @@ package com.qsportfolio.backend.controller;
 import com.qsportfolio.backend.domain.transaction.Transaction;
 import com.qsportfolio.backend.domain.user.User;
 import com.qsportfolio.backend.request.transaction.CreateTransactionRequest;
+import com.qsportfolio.backend.request.transaction.DeleteTransactionRequest;
 import com.qsportfolio.backend.response.transaction.TransactionListResponse;
 import com.qsportfolio.backend.response.transaction.TransactionResponse;
 import com.qsportfolio.backend.response.transaction.TransactionResponseFactory;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/transaction")
@@ -54,5 +56,13 @@ public class TransactionController {
         Page<Transaction> pagination = transactionService.listTransaction(page, size);
 
         return ResponseEntity.ok(TransactionResponseFactory.createTransactionListResponse(pagination));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteTransaction(@RequestBody DeleteTransactionRequest request){
+        User user = userService.getUser();
+        transactionService.deleteTransaction(user.getId(), request.getStockSymbol());
+        return ResponseEntity.ok("Transaction successfully removed !");
+
     }
 }

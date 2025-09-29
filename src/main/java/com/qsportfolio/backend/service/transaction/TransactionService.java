@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -56,6 +57,15 @@ public class TransactionService {
     public Page<Transaction> listTransaction(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return transactionRepository.findByUserId(SecurityUtils.getCurrentUser().getId(), pageable);
+    }
+
+    public void deleteTransaction(UUID userId, String stockSymbol) {
+        Optional<Stock> stock = this.stockRepository.findBySymbol(stockSymbol);
+        if (stock.isEmpty()) {
+            throw new IllegalArgumentException("Stock with symbol " + stockSymbol + " not found");
+        }
+        UUID stockId = stock.get().getId();
+        this.transactionRepository.delete(this.transactionRepository.findByUserIdAndStockId(userId, stockId));
     }
 
     ///

@@ -24,4 +24,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
     public List<PortfolioByStockDTO> getPortfolioGroupByStockFromUser(UUID userId);
 
     public void deleteByUserId(UUID userId);
+
+    public Transaction findByUserIdAndStockId(UUID userId, UUID stockId);
 }
