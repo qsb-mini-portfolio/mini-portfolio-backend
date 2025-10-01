@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/transaction")
@@ -66,11 +68,10 @@ public class TransactionController {
         return ResponseEntity.ok("Transaction(s) successfully removed !");
 
     }
-    @DeleteMapping("/id")
-    public ResponseEntity<String> deleteTransaction(@RequestBody DeleteTransactionRequest request){
-        transactionService.deleteTransaction(request.getTransactionId());
-        return ResponseEntity.ok("Transaction(s) successfully removed !");
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String, String>> deleteTransaction(@PathVariable UUID id){
+        transactionService.deleteTransaction(id);
+        return ResponseEntity.ok(Map.of("message", "Transaction successfully removed !"));
     }
 
     @PutMapping
