@@ -30,6 +30,6 @@ public final class TransactionResponseFactory {
         return new TransactionListResponse(
             transactionResponseList,
             transactionsPage.getNumber(),
-            transactionsPage.getNumberOfElements());
+            (int)transactionsPage.getTotalElements());
     }
 }
