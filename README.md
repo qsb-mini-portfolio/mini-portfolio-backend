@@ -51,3 +51,13 @@ docker-compose up -d
 ## Step 6: Run the Application
 
 Select the configuration you just created and click **Run**. The backend should now start with the `local` profile
+
+---
+
+# Documentation
+
+## Backend API
+
+The backend API is documented with Swagger.
+
+[Open API Documentation](https://qsb-mini-portfolio.github.io/mini-portfolio-backend/)
