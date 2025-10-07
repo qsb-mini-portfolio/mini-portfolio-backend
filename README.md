@@ -15,7 +15,7 @@ Make sure you have the following installed:
 Open your terminal and run:
 
 ```
-git clone https://gitlab.com/qs-portfolio/Backend.git
+git clone https://github.com/qsb-mini-portfolio/mini-portfolio-backend.git
 cd Backend
 ```
 
