@@ -8,7 +8,8 @@ public class UserResponseFactory {
     public static UserResponse createUserResponse(User user) {
         return new UserResponse(
                 user.getUsername(),
-                user.getEmail()
+                user.getEmail(),
+                user.getProfilePicture()
         );
     }
 }

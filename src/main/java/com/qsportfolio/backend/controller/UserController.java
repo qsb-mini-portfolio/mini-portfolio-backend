@@ -61,4 +61,10 @@ public class UserController {
         List<Stock> stockList = favoriteStockService.getFavoriteStock(user);
         return ResponseEntity.ok(StockResponseFactory.createFavoriteStockResponse(stockList));
     }
+
+    @PutMapping("/profilePicture")
+    public  ResponseEntity<UserResponse> modifyUserProfilePicture(@RequestBody ChangeProfilePictureRequest request) {
+        User user = userService.changeProfilePicture(request.getProfilePicture());
+        return ResponseEntity.ok(UserResponseFactory.createUserResponse(user));
+    }
 }

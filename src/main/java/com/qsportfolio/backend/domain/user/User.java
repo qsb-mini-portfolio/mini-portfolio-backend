@@ -25,4 +25,6 @@ public class User {
     String password;
     @Column
     String email;
+    @Column
+    String profilePicture;
 }
