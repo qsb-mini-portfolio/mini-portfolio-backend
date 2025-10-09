@@ -4,6 +4,7 @@ import com.qsportfolio.backend.domain.transaction.Stock;
 import com.qsportfolio.backend.response.portfolio.PortfolioStockResponse;
 import com.qsportfolio.backend.response.user.FavoriteStockResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class StockResponseFactory {
@@ -31,5 +32,9 @@ public final class StockResponseFactory {
         return new FavoriteStockResponse(
                 stockResponseList
         );
+    }
+
+    public static StockPriceGraphResponse createStockPriceGraphResponse() {
+        return new StockPriceGraphResponse(new ArrayList<>());
     }
 }

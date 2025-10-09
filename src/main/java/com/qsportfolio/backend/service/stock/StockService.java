@@ -1,10 +1,15 @@
 package com.qsportfolio.backend.service.stock;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qsportfolio.backend.domain.kafka.KafkaTopic;
 import com.qsportfolio.backend.domain.stock.StockInfo;
 import com.qsportfolio.backend.domain.stock.StockType;
 import com.qsportfolio.backend.domain.transaction.Stock;
+import com.qsportfolio.backend.errorHandler.AppException;
 import com.qsportfolio.backend.errorHandler.StockNotFoundException;
 import com.qsportfolio.backend.repository.StockRepository;
+import com.qsportfolio.backend.request.kafka.StockPriceGraphRequestKafka;
+import com.qsportfolio.backend.service.kafka.KafkaService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,14 +20,21 @@ import java.util.Optional;
 @Service
 public class StockService {
 
+    private static final ObjectMapper mapper = new ObjectMapper();
+
     private final StockRepository stockRepository;
     private final StockPriceRetriever stockPriceRetriever;
     private final StockInfoRetriever stockInfoRetriever;
+    private final KafkaService kafkaService;
 
-    public StockService(StockRepository stockRepository, StockPriceRetriever stockPriceRetriever, StockInfoRetriever stockInfoRetriever) {
+    public StockService(StockRepository stockRepository,
+                        StockPriceRetriever stockPriceRetriever,
+                        StockInfoRetriever stockInfoRetriever,
+                        KafkaService kafkaService) {
         this.stockRepository = stockRepository;
         this.stockPriceRetriever = stockPriceRetriever;
         this.stockInfoRetriever = stockInfoRetriever;
+        this.kafkaService = kafkaService;
     }
 
     public Stock createStock(String symbol, String name) {
@@ -99,6 +111,21 @@ public class StockService {
             stockRepository.save(stock);
         } catch (Exception e) {
             // Do nothing
+        }
+    }
+
+    public String getStockPriceGraph(String symbol, String format) {
+        StockPriceGraphRequestKafka payload = new StockPriceGraphRequestKafka(symbol, format);
+        String request;
+        try {
+            request = mapper.writeValueAsString(payload);
+        } catch (Exception e) {
+            throw new AppException("Unable to serialize payload");
+        }
+        try {
+            return kafkaService.sendAndReceive(KafkaTopic.StockPriceGraphRequest.topic, request, 5000);
+        } catch (Exception e) {
+            throw new AppException("Unable to get the Stock Price Graph");
         }
     }
 }

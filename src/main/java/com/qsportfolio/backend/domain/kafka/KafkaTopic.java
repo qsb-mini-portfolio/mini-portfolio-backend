@@ -6,7 +6,7 @@ public enum KafkaTopic {
 
     ReplyTopic("reply-topic"),
     HealthCheckRequest("health-check-request"),
-    HealthCheckResponse("health-check-response");
+    StockPriceGraphRequest("stock-price-graph-request");
 
     public final String topic;
 

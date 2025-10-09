@@ -3,6 +3,7 @@ package com.qsportfolio.backend.controller;
 import com.qsportfolio.backend.domain.transaction.Stock;
 import com.qsportfolio.backend.request.transaction.CreateStockRequest;
 import com.qsportfolio.backend.response.stock.StockListResponse;
+import com.qsportfolio.backend.response.stock.StockPriceGraphResponse;
 import com.qsportfolio.backend.response.stock.StockResponse;
 import com.qsportfolio.backend.response.stock.StockResponseFactory;
 import com.qsportfolio.backend.response.transaction.TransactionResponseFactory;
@@ -47,4 +48,10 @@ public class StockController {
 
         return ResponseEntity.ok(StockResponseFactory.createStockResponse(stock));
     }
+
+    @GetMapping("/graph/{symbol}")
+    public ResponseEntity<String> getStockPriceGraph(@PathVariable String symbol, @RequestParam(defaultValue = "5d") String format) {
+        return ResponseEntity.ok(stockService.getStockPriceGraph(symbol, format));
+    }
+
 }

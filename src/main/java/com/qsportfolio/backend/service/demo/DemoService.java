@@ -13,14 +13,14 @@ public class DemoService {
      */
     private final TransactionService transactionService;
     private final AuthService authService;
-    private final KafkaService kafkaProducerService;
+    private final KafkaService kafkaService;
 
     public DemoService(TransactionService transactionService,
                        AuthService authService,
-                       KafkaService kafkaProducerService) {
+                       KafkaService kafkaService) {
         this.transactionService = transactionService;
         this.authService = authService;
-        this.kafkaProducerService = kafkaProducerService;
+        this.kafkaService = kafkaService;
     }
 
     public String demoLogin() {
@@ -36,7 +36,7 @@ public class DemoService {
 
     public String pythonHealthCheck() {
         try {
-            kafkaProducerService.sendAndReceive(KafkaTopic.HealthCheckRequest.topic, "", 5000);
+            kafkaService.sendAndReceive(KafkaTopic.HealthCheckRequest.topic, "", 5000);
         } catch (Exception e) {
             return "Down";
         }

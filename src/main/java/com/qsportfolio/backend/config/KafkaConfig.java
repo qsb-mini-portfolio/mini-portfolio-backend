@@ -23,4 +23,9 @@ public class KafkaConfig {
     public NewTopic healthCheckRequestTopic() {
         return new NewTopic(KafkaTopic.HealthCheckRequest.topic, 1, (short) 1);
     }
+
+    @Bean
+    public NewTopic stockPriceGraphRequestTopic() {
+        return new NewTopic(KafkaTopic.StockPriceGraphRequest.topic, 1, (short) 1);
+    }
 }
