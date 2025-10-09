@@ -8,6 +8,6 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}:9200
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}:9092
     consumer:
       group-id: prod-consumer-group
