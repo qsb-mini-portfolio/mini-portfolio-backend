@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class StockPriceGraphRequestKafka {
     String symbol;
-    String format;
+    String period;
 }

@@ -114,8 +114,8 @@ public class StockService {
         }
     }
 
-    public String getStockPriceGraph(String symbol, String format) {
-        StockPriceGraphRequestKafka payload = new StockPriceGraphRequestKafka(symbol, format);
+    public String getStockPriceGraph(String symbol, String period) {
+        StockPriceGraphRequestKafka payload = new StockPriceGraphRequestKafka(symbol, period);
         String request;
         try {
             request = mapper.writeValueAsString(payload);
