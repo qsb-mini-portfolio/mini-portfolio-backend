@@ -2,6 +2,7 @@ package com.qsportfolio.backend.controller;
 
 import com.qsportfolio.backend.request.auth.LoginRequest;
 import com.qsportfolio.backend.service.auth.AuthService;
+import com.qsportfolio.backend.service.demo.DemoService;
 import com.qsportfolio.backend.service.transaction.TransactionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -15,23 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "DemoController", description = "Controller for demo purpose. DO NOT USE OTHERWISE !!!")
 public class DemoController {
 
-    private final TransactionService transactionService;
-    private final AuthService authService;
+    private final DemoService demoService;
 
-    public DemoController(TransactionService transactionService, AuthService authService) {
-        this.transactionService = transactionService;
-        this.authService = authService;
+    public DemoController(DemoService demoService) {
+        this.demoService = demoService;
     }
 
     @GetMapping
     public ResponseEntity<String> demoLogin() {
-        try {
-            authService.createUser("demo", "demoPassword", "demo@email");
-        } catch (Exception e) {
-            // Do nothing
-        }
-        String token = authService.login("demo", "demoPassword");
-        transactionService.deleteAllTransactionForDemo();
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(demoService.demoLogin());
+    }
+
+    @GetMapping("/health")
+    public ResponseEntity<String> pythonHealthCheck() {
+        return ResponseEntity.ok(demoService.pythonHealthCheck());
     }
 }
