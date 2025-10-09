@@ -26,4 +26,11 @@ public class UserService {
         return user;
     }
 
+    public User changeProfilePicture(String profilePicture){
+        User user = getUser();
+        user.setProfilePicture(profilePicture);
+        userRepository.save(user);
+        return user;
+    }
+
 }
