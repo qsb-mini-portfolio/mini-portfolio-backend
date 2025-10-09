@@ -1,4 +1,4 @@
-package com.qsportfolio.backend.response.stock;
+package com.qsportfolio.backend.response.kafka;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,8 +9,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StockPriceGraphResponse {
-    String symbol;
+public class StockPriceGraphResponseKafka {
+    String ticker;
     String period;
     List<Float> prices;
 }

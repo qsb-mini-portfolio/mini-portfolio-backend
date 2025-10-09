@@ -2,6 +2,7 @@ package com.qsportfolio.backend.controller;
 
 import com.qsportfolio.backend.domain.transaction.Stock;
 import com.qsportfolio.backend.request.transaction.CreateStockRequest;
+import com.qsportfolio.backend.response.kafka.StockPriceGraphResponseKafka;
 import com.qsportfolio.backend.response.stock.StockListResponse;
 import com.qsportfolio.backend.response.stock.StockPriceGraphResponse;
 import com.qsportfolio.backend.response.stock.StockResponse;
@@ -50,8 +51,12 @@ public class StockController {
     }
 
     @GetMapping("/graph/{symbol}")
-    public ResponseEntity<String> getStockPriceGraph(@PathVariable String symbol, @RequestParam(defaultValue = "5d") String period) {
-        return ResponseEntity.ok(stockService.getStockPriceGraph(symbol, period));
+    public ResponseEntity<StockPriceGraphResponse> getStockPriceGraph(@PathVariable String symbol, @RequestParam(defaultValue = "5d") String period) {
+        return ResponseEntity.ok(
+            StockResponseFactory.createStockPriceGraphResponse(
+                stockService.getStockPriceGraph(symbol, period)
+            )
+        );
     }
 
 }

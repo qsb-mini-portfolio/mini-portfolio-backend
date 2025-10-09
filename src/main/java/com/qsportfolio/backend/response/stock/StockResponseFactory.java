@@ -1,6 +1,7 @@
 package com.qsportfolio.backend.response.stock;
 
 import com.qsportfolio.backend.domain.transaction.Stock;
+import com.qsportfolio.backend.response.kafka.StockPriceGraphResponseKafka;
 import com.qsportfolio.backend.response.portfolio.PortfolioStockResponse;
 import com.qsportfolio.backend.response.user.FavoriteStockResponse;
 
@@ -34,7 +35,10 @@ public final class StockResponseFactory {
         );
     }
 
-    public static StockPriceGraphResponse createStockPriceGraphResponse() {
-        return new StockPriceGraphResponse(new ArrayList<>());
+    public static StockPriceGraphResponse createStockPriceGraphResponse(StockPriceGraphResponseKafka stockPriceGraphResponseKafka) {
+        return new StockPriceGraphResponse(
+            stockPriceGraphResponseKafka.getTicker(),
+            stockPriceGraphResponseKafka.getPeriod(),
+            stockPriceGraphResponseKafka.getPrices());
     }
 }

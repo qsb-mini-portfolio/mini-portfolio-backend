@@ -9,6 +9,7 @@ import com.qsportfolio.backend.errorHandler.AppException;
 import com.qsportfolio.backend.errorHandler.StockNotFoundException;
 import com.qsportfolio.backend.repository.StockRepository;
 import com.qsportfolio.backend.request.kafka.StockPriceGraphRequestKafka;
+import com.qsportfolio.backend.response.kafka.StockPriceGraphResponseKafka;
 import com.qsportfolio.backend.service.kafka.KafkaService;
 import org.springframework.stereotype.Service;
 
@@ -114,7 +115,7 @@ public class StockService {
         }
     }
 
-    public String getStockPriceGraph(String symbol, String period) {
+    public StockPriceGraphResponseKafka getStockPriceGraph(String symbol, String period) {
         StockPriceGraphRequestKafka payload = new StockPriceGraphRequestKafka(symbol, period);
         String request;
         try {
@@ -123,7 +124,7 @@ public class StockService {
             throw new AppException("Unable to serialize payload");
         }
         try {
-            return kafkaService.sendAndReceive(KafkaTopic.StockPriceGraphRequest.topic, request, 5000);
+            return mapper.readValue(kafkaService.sendAndReceive(KafkaTopic.StockPriceGraphRequest.topic, request, 5000), StockPriceGraphResponseKafka.class);
         } catch (Exception e) {
             throw new AppException("Unable to get the Stock Price Graph");
         }
