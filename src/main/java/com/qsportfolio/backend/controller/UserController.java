@@ -14,9 +14,11 @@ import com.qsportfolio.backend.service.user.UserService;
 import com.qsportfolio.backend.service.user.FavoriteStockService;
 import com.qsportfolio.backend.response.user.UserResponseFactory;
 import com.qsportfolio.backend.response.user.UserResponse;
+import com.qsportfolio.backend.request.users.ChangeProfilePictureRequest;
 
 import java.util.List;
- 
+import com.qsportfolio.backend.request.users.ChangeProfilePictureRequest;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {

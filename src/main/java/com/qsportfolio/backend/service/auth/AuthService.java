@@ -30,7 +30,7 @@ public class AuthService {
             UUID.randomUUID(),
             username,
             passwordEncoder.encode(password),
-            email
+            email, null
             );
 
         userRepository.save(user);
