@@ -30,7 +30,7 @@ public class AuthService {
             UUID.randomUUID(),
             username,
             passwordEncoder.encode(password),
-            email, null
+            email, "default-avatar"
             );
 
         userRepository.save(user);
@@ -53,5 +53,4 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }
-
 }

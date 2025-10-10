@@ -3,7 +3,10 @@ package com.qsportfolio.backend.controller;
 import com.qsportfolio.backend.request.auth.LoginRequest;
 import com.qsportfolio.backend.request.auth.NewPasswordRequest;
 import com.qsportfolio.backend.request.auth.RegisterRequest;
+import com.qsportfolio.backend.response.auth.AuthResponseFactory;
+import com.qsportfolio.backend.response.auth.RegisterResponse;
 import com.qsportfolio.backend.service.auth.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +26,17 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
-        authService.createUser(request.getUsername(), request.getPassword(), "");
-        return ResponseEntity.ok("User registered successfully!");
+    public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) {
+        try {
+            authService.createUser(request.getUsername(), request.getPassword(), "");
+            return ResponseEntity.ok(AuthResponseFactory.createRegisterSuccessResponse());
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(AuthResponseFactory.createRegisterFailureResponse(e.getMessage()));
+        }
     }
+
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest request) {
