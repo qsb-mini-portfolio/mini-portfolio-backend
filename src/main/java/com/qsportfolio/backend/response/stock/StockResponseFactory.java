@@ -39,6 +39,7 @@ public final class StockResponseFactory {
         return new StockPriceGraphResponse(
             stockPriceGraphResponseKafka.getTicker(),
             stockPriceGraphResponseKafka.getPeriod(),
+            stockPriceGraphResponseKafka.getInterval(),
             stockPriceGraphResponseKafka.getPrices());
     }
 }

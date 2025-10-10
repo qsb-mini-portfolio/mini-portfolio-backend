@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class StockPriceGraphRequestKafka {
     String symbol;
     String period;
+    String interval;
 }

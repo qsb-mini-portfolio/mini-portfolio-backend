@@ -12,5 +12,6 @@ import java.util.List;
 public class StockPriceGraphResponse {
     String symbol;
     String period;
+    String interval;
     List<Float> prices;
 }
