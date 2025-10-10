@@ -12,5 +12,6 @@ import java.util.List;
 public class StockPriceGraphResponseKafka {
     String ticker;
     String period;
+    String interval;
     List<Float> prices;
 }

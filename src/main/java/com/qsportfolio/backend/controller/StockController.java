@@ -51,10 +51,12 @@ public class StockController {
     }
 
     @GetMapping("/graph/{symbol}")
-    public ResponseEntity<StockPriceGraphResponse> getStockPriceGraph(@PathVariable String symbol, @RequestParam(defaultValue = "5d") String period) {
+    public ResponseEntity<StockPriceGraphResponse> getStockPriceGraph(@PathVariable String symbol,
+                                                                      @RequestParam(defaultValue = "5d") String period,
+                                                                      @RequestParam(defaultValue = "15m") String interval) {
         return ResponseEntity.ok(
             StockResponseFactory.createStockPriceGraphResponse(
-                stockService.getStockPriceGraph(symbol, period)
+                stockService.getStockPriceGraph(symbol, period, interval)
             )
         );
     }

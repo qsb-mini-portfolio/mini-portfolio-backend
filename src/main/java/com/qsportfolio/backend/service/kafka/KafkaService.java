@@ -1,5 +1,6 @@
 package com.qsportfolio.backend.service.kafka;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qsportfolio.backend.domain.kafka.KafkaTopic;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -58,7 +59,17 @@ public class KafkaService {
 
         CompletableFuture<String> future = pendingRequests.remove(correlationId);
         if (future != null) {
-            future.complete(record.value());
+            String value = record.value();
+            if (value.startsWith("\"") && value.endsWith("\"")) {
+                try {
+                    ObjectMapper mapper = new ObjectMapper();
+                    value = mapper.readValue(value, String.class);
+                } catch (Exception e) {
+                    System.err.println("Failed to unwrap double-encoded JSON: " + e.getMessage());
+                }
+            }
+
+            future.complete(value);
         } else {
             System.err.println("No pending request for correlationId: " + correlationId);
         }
