@@ -29,20 +29,9 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) {
-        try {
-            authService.createUser(request.getUsername(), request.getPassword(), "");
-            return ResponseEntity.ok(AuthResponseFactory.createRegisterSuccessResponse());
-        } catch (Exception e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(AuthResponseFactory.createRegisterFailureResponse(e.getMessage()));
-        }
-    }
-    @PostMapping("/registerTemp")
     public ResponseEntity<RegisterResponse> registerTemp(@Valid @RequestBody RegisterRequestTemp request) {
         try {
-            boolean validCaptcha = recaptchaService.verify(request.getRecaptcha(), "register");
+            boolean validCaptcha = recaptchaService.verify(request.getRecaptcha() );
             if (!validCaptcha) {
                 return ResponseEntity
                         .badRequest()
