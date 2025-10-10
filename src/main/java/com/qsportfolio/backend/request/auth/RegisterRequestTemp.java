@@ -1,12 +1,12 @@
 package com.qsportfolio.backend.request.auth;
 
-import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 @Data
-public class RegisterRequest {
+public class RegisterRequestTemp {
     String username;
 
     @NotBlank(message = "Password is required")
