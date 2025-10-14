@@ -1,13 +1,12 @@
 package com.qsportfolio.backend.controller;
 
 import com.qsportfolio.backend.response.portfolio.DashboardResponse;
+import com.qsportfolio.backend.response.portfolio.PortfolioGraphResponse;
 import com.qsportfolio.backend.response.portfolio.PortfolioResponse;
 import com.qsportfolio.backend.response.portfolio.PortfolioResponseFactory;
-import com.qsportfolio.backend.service.PortfolioService;
+import com.qsportfolio.backend.service.portfolio.PortfolioService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/portfolio")
@@ -27,5 +26,16 @@ public class PortfolioController {
     @GetMapping("/dashboard")
     public ResponseEntity<DashboardResponse> getDashboard() {
         return ResponseEntity.ok(PortfolioResponseFactory.createDashboardResponse(portfolioService.getPortfolio()));
+    }
+
+    @GetMapping("/graph")
+    public ResponseEntity<PortfolioGraphResponse> getPortfolioGraph(
+        @RequestParam(defaultValue = "5d") String period,
+        @RequestParam(defaultValue = "15m") String interval) {
+        return ResponseEntity.ok(
+            PortfolioResponseFactory.createPortfolioGraphResponse(
+                portfolioService.getPortfolioGraph(period, interval)
+            )
+        );
     }
 }

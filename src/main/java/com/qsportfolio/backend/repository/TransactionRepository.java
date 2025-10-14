@@ -2,12 +2,15 @@ package com.qsportfolio.backend.repository;
 
 import com.qsportfolio.backend.domain.portfolio.PortfolioByStockDTO;
 import com.qsportfolio.backend.domain.transaction.Transaction;
+import com.qsportfolio.backend.security.SecurityUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,4 +29,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
     public void deleteByUserId(UUID userId);
 
     public List<Transaction> findAllByUserIdAndStockId(UUID userId, UUID stockId);
+
+    public List<Transaction> findByDateAfterAndUserId(LocalDateTime date, UUID userId);
 }

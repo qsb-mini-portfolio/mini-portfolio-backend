@@ -15,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Transaction {
     @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     UUID id;
     @ManyToOne
     @JoinColumn(name = "stock_id")

@@ -28,4 +28,9 @@ public class KafkaConfig {
     public NewTopic stockPriceGraphRequestTopic() {
         return new NewTopic(KafkaTopic.StockPriceGraphRequest.topic, 1, (short) 1);
     }
+
+    @Bean
+    public NewTopic portfolioGraphRequestTopic() {
+        return new NewTopic(KafkaTopic.PortfolioGraphRequest.topic, 1, (short) 1);
+    }
 }

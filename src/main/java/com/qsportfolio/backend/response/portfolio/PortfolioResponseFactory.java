@@ -3,6 +3,7 @@ package com.qsportfolio.backend.response.portfolio;
 import com.qsportfolio.backend.domain.portfolio.PortfolioByStockDTO;
 import com.qsportfolio.backend.domain.portfolio.PortfolioDTO;
 import com.qsportfolio.backend.domain.stock.StockType;
+import com.qsportfolio.backend.response.kafka.PortfolioGraphResponseKafka;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,5 +65,13 @@ public class PortfolioResponseFactory {
             .yield(portfolioDTO.getYield())
             .build();
 
+    }
+
+    public static PortfolioGraphResponse createPortfolioGraphResponse(PortfolioGraphResponseKafka portfolioGraphResponseKafka) {
+        return new PortfolioGraphResponse(
+            portfolioGraphResponseKafka.getPeriod(),
+            portfolioGraphResponseKafka.getInterval(),
+            portfolioGraphResponseKafka.getPrices()
+        );
     }
 }
