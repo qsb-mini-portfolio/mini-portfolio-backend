@@ -3,9 +3,11 @@ package com.qsportfolio.backend.controller;
 import com.qsportfolio.backend.request.auth.LoginRequest;
 import com.qsportfolio.backend.request.auth.NewPasswordRequest;
 import com.qsportfolio.backend.request.auth.RegisterRequest;
+import com.qsportfolio.backend.request.auth.RegisterRequestTemp;
 import com.qsportfolio.backend.response.auth.AuthResponseFactory;
 import com.qsportfolio.backend.response.auth.RegisterResponse;
 import com.qsportfolio.backend.service.auth.AuthService;
+import com.qsportfolio.backend.service.auth.RecaptchaService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +20,23 @@ public class AuthController {
 
     private final AuthService authService;
     private final JWTUtil jwtUtil;
-
-    public AuthController(AuthService authService, JWTUtil jwtUtil) {
+    private final RecaptchaService recaptchaService;
+    public AuthController(AuthService authService, JWTUtil jwtUtil,  RecaptchaService recaptchaService) {
 
         this.jwtUtil = jwtUtil;
         this.authService = authService;
+        this.recaptchaService = recaptchaService;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<RegisterResponse> registerTemp(@Valid @RequestBody RegisterRequestTemp request) {
         try {
+            boolean validCaptcha = recaptchaService.verify(request.getRecaptcha() );
+            if (!validCaptcha) {
+                return ResponseEntity
+                        .badRequest()
+                        .body(AuthResponseFactory.createRegisterFailureResponse("Captcha Issue"));
+            }
             authService.createUser(request.getUsername(), request.getPassword(), "");
             return ResponseEntity.ok(AuthResponseFactory.createRegisterSuccessResponse());
         } catch (Exception e) {
@@ -36,7 +45,6 @@ public class AuthController {
                     .body(AuthResponseFactory.createRegisterFailureResponse(e.getMessage()));
         }
     }
-
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest request) {
